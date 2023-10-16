@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const app = express();
+const mongoose = require('mongoose');
 const port = 3000;
 const { auth } = require('./middleware');
 const JWT_SECRET = 'secret';
@@ -10,6 +11,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // For serving static files from public directory
 app.use(express.json()); // For parsing application/json
 app.use(cors());
+
+const URI =
+  'mongodb+srv://pranavprasad016:VvHYJqiRfbqc3YIx@cluster0.vfkgfz8.mongodb.net/CodersHub?retryWrites=true&w=majority';
+
+mongoose.connect(URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+
+db.on('connected', () => {
+  console.log('Connected to MongoDB');
+});
+
+db.on('error', (err) => {
+  console.error('MongoDB connection error:', err);
+});
 
 let USER_ID_COUNTER = 3;
 const USERS = [
@@ -182,7 +200,7 @@ const SUBMISSION = [
 
 app.get('/', (req, res) => {
   res.send('Hello everyone!');
-  console.log(USERS);
+  // console.log(USERS);
 });
 
 app.post('/signup', (req, res) => {
