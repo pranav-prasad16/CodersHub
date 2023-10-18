@@ -5,7 +5,7 @@ import logo from './../assets/logo/logo.jpg';
 
 const ProblemDetails = (props) => {
   const { pid } = useParams();
-  const cleanId = pid.substring(1);
+  const cleanId = pid.substring(0);
   const [problem, setProblem] = useState('');
   const [submission, setSubmission] = useState('');
   const [result, setResult] = useState('');

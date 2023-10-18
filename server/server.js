@@ -15,19 +15,19 @@ app.use(cors());
 const URI =
   'mongodb+srv://pranavprasad016:VvHYJqiRfbqc3YIx@cluster0.vfkgfz8.mongodb.net/CodersHub?retryWrites=true&w=majority';
 
-mongoose.connect(URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
+// mongoose.connect(URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+// const db = mongoose.connection;
 
-db.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
+// db.on('connected', () => {
+//   console.log('Connected to MongoDB');
+// });
 
-db.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
-});
+// db.on('error', (err) => {
+//   console.error('MongoDB connection error:', err);
+// });
 
 let USER_ID_COUNTER = 3;
 const USERS = [
@@ -44,6 +44,15 @@ const USERS = [
     email: 'johndoe@email.com',
     password: 'john@100',
     role: 'admin',
+  },
+];
+
+const CONTACTUS = [
+  {
+    userName: 'joey',
+    email: 'joey@email.com',
+    message:
+      'Hey! Love your platform very user-friendly and easy to use looking up for your new updates',
   },
 ];
 
@@ -346,6 +355,22 @@ app.post('/submissions', auth, (req, res) => {
       status: 'WA',
     });
   }
+});
+
+app.post('/contact', (req, res) => {
+  const { userName, email, message } = req.body;
+
+  if (!userName || !email || !message) {
+    return res.status(400).json({ message: 'Missing or Empty required filds' });
+  }
+
+  CONTACTUS.push({
+    userName,
+    email,
+    message,
+  });
+  console.log(CONTACTUS);
+  return res.status(201).json({ mesage: 'We received your message' });
 });
 
 app.post('/admin', (req, res) => {

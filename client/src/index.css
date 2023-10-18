@@ -65,3 +65,9 @@ input[type='password'] {
   width: 3.125rem; /* Set the desired width */
   height: auto; /* Automatically adjust height while maintaining aspect ratio */
 }
+
+.logo-btn {
+  width: 1.75rem;
+  border-radius: 100px;
+  height: auto;
+}

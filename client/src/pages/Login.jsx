@@ -28,7 +28,7 @@ const Login = (props) => {
       const token = json.token;
       const userId = json.userId;
       onLogin(token);
-      const url = `/problem/:${problemId}`;
+      const url = `/problem/${problemId}`;
       if (problemId) {
         setUserId(userId);
         navigate(url);

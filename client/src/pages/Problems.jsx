@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import left from './../assets/logo/left.png';
+import right from './../assets/logo/right.png';
 
 const Problems = (props) => {
   const [problems, setProblems] = useState([]);
   const { setProblemId } = props;
+  const [currentPage, setCurrentPage] = useState(1);
+  const problemsPerPage = 10; // Number of problems to display per page
 
   const init = async () => {
     const response = await fetch('http://localhost:3000/questions', {
@@ -19,7 +23,6 @@ const Problems = (props) => {
     if (id) {
       setProblemId(id);
     }
-    console.log(id);
   };
 
   const difficultyColor = (value) => {
@@ -33,6 +36,19 @@ const Problems = (props) => {
   useEffect(() => {
     init();
   }, []);
+
+  // Calculate the range of problems to display on the current page
+  const startIndex = (currentPage - 1) * problemsPerPage;
+  const endIndex = currentPage * problemsPerPage;
+  const displayedProblems = problems.slice(startIndex, endIndex);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(problems.length / problemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div className="container">
       <table className="table">
@@ -45,12 +61,12 @@ const Problems = (props) => {
           </tr>
         </thead>
         <tbody>
-          {problems.map((problem, index) => (
+          {displayedProblems.map((problem, index) => (
             <tr key={problem.id}>
               <th>{problem.id}</th>
               <td>
                 <Link
-                  to={`/problem/:${problem.id}`}
+                  to={`/problem/${problem.id}`} // Remove ':' before problem.id
                   onClick={() => handleProblemClick(problem.id)}
                   className="nav-link"
                 >
@@ -65,6 +81,22 @@ const Problems = (props) => {
           ))}
         </tbody>
       </table>
+      <div className="d-flex justify-content-center align-items-center">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="btn btn-sm btn-outline-secondary"
+        >
+          <img src={left} alt="previous button" className="logo-btn" />
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="btn btn-sm btn-outline-secondary"
+        >
+          <img src={right} alt="next button" className="logo-btn" />
+        </button>
+      </div>
     </div>
   );
 };
