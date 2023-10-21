@@ -68,7 +68,7 @@ const Problems = (props) => {
                 <Link
                   to={`/problem/${problem.id}`} // Remove ':' before problem.id
                   onClick={() => handleProblemClick(problem.id)}
-                  className="nav-link"
+                  className="problems-link"
                 >
                   {problem.title}
                 </Link>

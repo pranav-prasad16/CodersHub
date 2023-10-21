@@ -106,3 +106,15 @@ input[type='password'] {
   width: 100%; /* Expand the line to cover the entire width of the link */
   transform: scaleX(1); /* Scale the line to its full width */
 }
+
+.problems-link {
+  list-style: none;
+  text-decoration: none;
+  color: black;
+}
+
+.btn-link {
+  list-style: none;
+  text-decoration: none;
+  color: black;
+}
