@@ -52,8 +52,8 @@ const Layout = (props) => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/noPage">
-                  No Page
+                <Link className="nav-link" to="/about">
+                  About Us
                 </Link>
               </li>
             </ul>
