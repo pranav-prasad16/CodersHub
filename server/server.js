@@ -12,22 +12,34 @@ app.use(express.static('public')); // For serving static files from public direc
 app.use(express.json()); // For parsing application/json
 app.use(cors());
 
+//step 1 : connect to mongodB atlas
 const URI =
   'mongodb+srv://pranavprasad016:VvHYJqiRfbqc3YIx@cluster0.vfkgfz8.mongodb.net/CodersHub?retryWrites=true&w=majority';
 
-// mongoose.connect(URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-// const db = mongoose.connection;
+mongoose.connect(URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
 
-// db.on('connected', () => {
-//   console.log('Connected to MongoDB');
-// });
+db.on('connected', () => {
+  console.log('Connected to MongoDB');
+});
 
-// db.on('error', (err) => {
-//   console.error('MongoDB connection error:', err);
-// });
+db.on('error', (err) => {
+  console.error('MongoDB connection error:', err);
+});
+
+// Step 2: Define a Mongoose Schema and Model
+const userSchema = new mongoose.Schema({
+  id: String,
+  userName: String,
+  email: String,
+  password: String,
+  role: String,
+});
+
+const User = mongoose.model('User', userSchema);
 
 let USER_ID_COUNTER = 3;
 const USERS = [
@@ -46,6 +58,58 @@ const USERS = [
     role: 'admin',
   },
 ];
+
+// // Step 3: Load Local Data to MongoDB
+// async function loadLocalUsersToDatabase() {
+//   try {
+//     for (const userData of USERS) {
+//       const user = new User(userData);
+//       await user.save();
+//       console.log(`User ${user.userName} has been saved to the database.`);
+//     }
+//   } catch (err) {
+//     console.error('Error loading users to the database:', err);
+//   } finally {
+//     mongoose.connection.close();
+//   }
+// }
+
+// // Call the function to load local users to the database
+// loadLocalUsersToDatabase();
+
+// // Step 4: Retrieve Data and Cross-Check (Example Function)
+// async function loginUser(email, password) {
+//   try {
+//     const user = await User.findOne({ email: email });
+
+//     if (!user) {
+//       console.log('User not found');
+//       return res.status(401).json({ message: 'User not found' });
+//     }
+
+//     // Check if the password matches
+//     if (user.password === password) {
+//       console.log('Login successful');
+//       console.log('User:', user);
+//       const token = jwt.sign(
+//         {
+//           id: user.id,
+//         },
+//         JWT_SECRET
+//       );
+//       const userId = user.id;
+//       return res.status(200).json({ token, userId });
+//     } else {
+//       console.log('Incorrect password');
+//       return res.status(403).json({ message: 'Check the password' });
+//     }
+//   } catch (err) {
+//     console.error('Error logging in:', err);
+//   }
+// }
+
+// Example usage to cross-check a user's credentials
+// loginUser('james@email.com', 'james@100'); // Provide the user's email and password
 
 const CONTACTUS = [
   {
@@ -246,6 +310,7 @@ app.post('/login', (req, res) => {
   }
 
   const user = USERS.find((user) => user.email === email);
+  // loginUser(email, password);
 
   if (!user) {
     return res.status(401).json({ message: 'User not found' });
@@ -253,16 +318,15 @@ app.post('/login', (req, res) => {
 
   if (user.password !== password) {
     return res.status(403).json({ message: 'Check the password' });
-  } else {
-    const token = jwt.sign(
-      {
-        id: user.id,
-      },
-      JWT_SECRET
-    );
-    const userId = user.id;
-    return res.status(200).json({ token, userId });
   }
+  const token = jwt.sign(
+    {
+      id: user.id,
+    },
+    JWT_SECRET
+  );
+  const userId = user.id;
+  return res.status(200).json({ token, userId });
 });
 
 app.get('/me', auth, (req, res) => {
