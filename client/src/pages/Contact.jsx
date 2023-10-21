@@ -44,11 +44,13 @@ const Contact = () => {
         <h1>{errorMessage}</h1>
       ) : (
         <div className="container">
-          <h2>Contact Us</h2>
-          <p>
-            We'd love to hear from you! Please use the form below to get in
-            touch.
-          </p>
+          <header className="text-center my-3">
+            <h1 className="display-4">Loved our platform?</h1>
+            <p className="lead">
+              We'd love to hear from you! Please use the form below to get in
+              touch.
+            </p>
+          </header>
 
           <form>
             <div className="form-group">
