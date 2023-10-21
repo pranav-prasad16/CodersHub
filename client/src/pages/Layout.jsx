@@ -27,7 +27,7 @@ const Layout = (props) => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div
-            className="collapse navbar-collapse d-flex justify-content-between"
+            className="collapse navbar-collapse justify-content-between"
             id="navbarNav"
           >
             <ul className="navbar-nav ml-auto">

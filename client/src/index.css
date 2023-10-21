@@ -71,3 +71,38 @@ input[type='password'] {
   border-radius: 100px;
   height: auto;
 }
+/* CSS for the hover effect with line */
+.nav-link {
+  position: relative; /* Make the link container relative for absolute positioning */
+  text-decoration: none; /* Remove default underline */
+  overflow: hidden; /* Hide any overflowing content */
+}
+
+.nav-link::before,
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px; /* Adjust the line thickness as needed */
+  background-color: limegreen; /* Change to your desired line color */
+  bottom: 0;
+  transition: width 0.7s; /* Add a smooth transition effect */
+}
+
+.nav-link::before {
+  left: 0; /* Start the line from the beginning of the link */
+  transform: scaleX(0); /* Initially, set the width to 0 */
+  transform-origin: left; /* Scale from the left edge */
+}
+
+.nav-link::after {
+  right: 0; /* Start the line from the end of the link */
+  transform: scaleX(0); /* Initially, set the width to 0 */
+  transform-origin: right; /* Scale from the right edge */
+}
+
+.nav-link:hover::before,
+.nav-link:hover::after {
+  width: 100%; /* Expand the line to cover the entire width of the link */
+  transform: scaleX(1); /* Scale the line to its full width */
+}
