@@ -3,439 +3,79 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const mongoose = require('mongoose');
 const port = 3000;
-const { auth } = require('./middleware');
+const { auth } = require('./middleware/middleware');
 const JWT_SECRET = 'secret';
 const cors = require('cors');
+const signupRouter = require('./routes/signup');
+const loginRouter = require('./routes/login');
+const meRouter = require('./routes/me');
+const questionRouter = require('./routes/question');
+const runRouter = require('./routes/run');
+const submissionRouter = require('./routes/submission');
+const contactRouter = require('./routes/contact');
+const { loadLocalUsersToDatabase } = require('./scripts/loadUsersTodB');
+const { loadLocalQuestionsToDatabase } = require('./scripts/loadQuesTodB');
+const { loadLocalSubmissionsToDatabase } = require('./scripts/loadSubmTodB');
+const { loadLocalContactsToDatabase } = require('./scripts/loadContactTodB');
+const { connectMongodB } = require('./config/database');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // For serving static files from public directory
 app.use(express.json()); // For parsing application/json
 app.use(cors());
 
-//step 1 : connect to mongodB atlas
-const URI =
-  'mongodb+srv://pranavprasad016:VvHYJqiRfbqc3YIx@cluster0.vfkgfz8.mongodb.net/CodersHub?retryWrites=true&w=majority';
+connectMongodB(
+  'mongodb+srv://pranavprasad016:VvHYJqiRfbqc3YIx@cluster0.vfkgfz8.mongodb.net/CodersHub?retryWrites=true&w=majority'
+);
+mongoose.connection.on('open', async () => {
+  const User = mongoose.model('User');
+  const Question = mongoose.model('Question');
+  const Submission = mongoose.model('Submission');
+  const Contact = mongoose.model('Contact');
 
-mongoose.connect(URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // Check if there are any existing users in the database
+  const existingUsers = await User.find();
+  const existingQuestions = await Question.find();
+  const existingSubmissions = await Submission.find();
+  const existingContacts = await Contact.find();
+
+  // If there are no existing users, load the data
+  if (existingUsers.length === 0) {
+    loadLocalUsersToDatabase();
+  }
+  if (existingQuestions.length === 0) {
+    loadLocalQuestionsToDatabase();
+  }
+  if (existingSubmissions.length === 0) {
+    loadLocalSubmissionsToDatabase();
+  }
+  if (existingContacts.length === 0) {
+    loadLocalContactsToDatabase();
+  }
 });
-const db = mongoose.connection;
-
-db.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
-
-db.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
-});
-
-// Step 2: Define a Mongoose Schema and Model
-const userSchema = new mongoose.Schema({
-  id: String,
-  userName: String,
-  email: String,
-  password: String,
-  role: String,
-});
-
-const User = mongoose.model('User', userSchema);
-
-let USER_ID_COUNTER = 3;
-const USERS = [
-  {
-    id: '1',
-    userName: 'james',
-    email: 'james@email.com',
-    password: 'james@100',
-    role: 'user',
-  },
-  {
-    id: '2',
-    userName: 'john',
-    email: 'johndoe@email.com',
-    password: 'john@100',
-    role: 'admin',
-  },
-];
-
-// // Step 3: Load Local Data to MongoDB
-// async function loadLocalUsersToDatabase() {
-//   try {
-//     for (const userData of USERS) {
-//       const user = new User(userData);
-//       await user.save();
-//       console.log(`User ${user.userName} has been saved to the database.`);
-//     }
-//   } catch (err) {
-//     console.error('Error loading users to the database:', err);
-//   } finally {
-//     mongoose.connection.close();
-//   }
-// }
-
-// // Call the function to load local users to the database
-// loadLocalUsersToDatabase();
-
-// // Step 4: Retrieve Data and Cross-Check (Example Function)
-// async function loginUser(email, password) {
-//   try {
-//     const user = await User.findOne({ email: email });
-
-//     if (!user) {
-//       console.log('User not found');
-//       return res.status(401).json({ message: 'User not found' });
-//     }
-
-//     // Check if the password matches
-//     if (user.password === password) {
-//       console.log('Login successful');
-//       console.log('User:', user);
-//       const token = jwt.sign(
-//         {
-//           id: user.id,
-//         },
-//         JWT_SECRET
-//       );
-//       const userId = user.id;
-//       return res.status(200).json({ token, userId });
-//     } else {
-//       console.log('Incorrect password');
-//       return res.status(403).json({ message: 'Check the password' });
-//     }
-//   } catch (err) {
-//     console.error('Error logging in:', err);
-//   }
-// }
-
-// Example usage to cross-check a user's credentials
-// loginUser('james@email.com', 'james@100'); // Provide the user's email and password
-
-const CONTACTUS = [
-  {
-    userName: 'joey',
-    email: 'joey@email.com',
-    message:
-      'Hey! Love your platform very user-friendly and easy to use looking up for your new updates',
-  },
-];
-
-const QUESTIONS = [
-  {
-    id: '1',
-    title: 'Two Sum',
-    description:
-      'Given an array of integers, return indices of the two numbers such that they add up to a specific target.',
-    acceptanceRate: '70%',
-    difficulty: 'Easy',
-    input: [2, 7, 11, 15],
-    output: 9,
-  },
-  {
-    id: '2',
-    title: 'Reverse String',
-    description:
-      'Write a function that reverses a string. The input string is given as an array of characters.',
-    acceptanceRate: '85%',
-    difficulty: 'Easy',
-    input: ['h', 'e', 'l', 'l', 'o'],
-    output: 'olleh',
-  },
-  {
-    id: '3',
-    title: 'Palindrome Number',
-    description:
-      'Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.',
-    acceptanceRate: '60%',
-    difficulty: 'Medium',
-    input: 121,
-    output: 'true',
-  },
-  {
-    id: '4',
-    title: 'FizzBuzz',
-    description:
-      'Write a program that outputs the string representation of numbers from 1 to n. But for multiples of three, it should output "Fizz" instead of the number and for the multiples of five output "Buzz". For numbers which are multiples of both three and five, output "FizzBuzz".',
-    acceptanceRate: '25%',
-    difficulty: 'Hard',
-    input: 15,
-    output: [
-      '1',
-      '2',
-      'Fizz',
-      '4',
-      'Buzz',
-      'Fizz',
-      '7',
-      '8',
-      'Fizz',
-      'Buzz',
-      '11',
-      'Fizz',
-      '13',
-      '14',
-      'FizzBuzz',
-    ],
-  },
-  {
-    id: '5',
-    title: 'Valid Parentheses',
-    description:
-      'Given a string containing just the characters "(", ")", "{", "}", "[", and "]", determine if the input string is valid.',
-    acceptanceRate: '80%',
-    difficulty: 'Medium',
-    input: 'String s = "tailwindcss_is_so{coo)"',
-    output: 'true',
-  },
-  {
-    id: '6',
-    title: 'Longest Common Prefix',
-    description:
-      'Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string "".',
-    acceptanceRate: '70%',
-    difficulty: 'Easy',
-    input: ['flower', 'flow', 'flight'],
-    output: 'fl',
-  },
-  {
-    id: '7',
-    title: 'Merge Two Sorted Lists',
-    description:
-      'Merge two sorted linked lists and return it as a sorted list. The list should be made by splicing together the nodes of the first two lists.',
-    acceptanceRate: '75%',
-    difficulty: 'Easy',
-    input: [
-      [1, 2, 4],
-      [1, 3, 4],
-    ],
-    output: [1, 1, 2, 3, 4, 4],
-  },
-  {
-    id: '8',
-    title: 'Reverse Integer',
-    description:
-      'Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.',
-    acceptanceRate: '35%',
-    difficulty: 'Hard',
-    input: 123,
-    output: 321,
-  },
-  {
-    id: '9',
-    title: 'Valid Anagram',
-    description:
-      'Given two strings s and t, return true if t is an anagram of s, and false otherwise.',
-    acceptanceRate: '70%',
-    difficulty: 'Medium',
-    input: ['anagram', 'nagaram'],
-    output: 'true',
-  },
-  {
-    id: '10',
-    title: 'Remove Duplicates from Sorted Array',
-    description:
-      'Given a sorted array nums, remove the duplicates in-place such that each element appears only once and returns the new length.',
-    acceptanceRate: '75%',
-    difficulty: 'Easy',
-    input: [0, 0, 1, 1, 1, 2, 2, 3, 3, 4],
-    output: 5,
-  },
-  {
-    id: '11',
-    title: 'Search Insert Position',
-    description:
-      'Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.',
-    acceptanceRate: '65%',
-    difficulty: 'Medium',
-    input: [1, 3, 5, 6],
-    output: 5,
-  },
-  {
-    id: '12',
-    title: 'Valid Palindrome',
-    description:
-      'Given a string s, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.',
-    acceptanceRate: '70%',
-    difficulty: 'Easy',
-    input: 'A man, a plan, a canal: Panama',
-    output: true,
-  },
-];
-
-const SUBMISSION = [
-  {
-    submission: `print('hello world')`,
-    problemId: '29',
-    userId: '7',
-    status: 'WA',
-  },
-];
 
 app.get('/', (req, res) => {
   res.send('Hello everyone!');
   // console.log(USERS);
 });
 
-app.post('/signup', (req, res) => {
-  const { userName, email, password } = req.body;
+app.post('/signup', signupRouter);
 
-  if (!userName || !email || !password) {
-    return res.status(401).json({ message: 'Enter all the credentials' });
-  }
+app.post('/login', loginRouter);
 
-  const existingUser = USERS.find((user) => user.email === email);
+app.get('/me', meRouter);
 
-  if (existingUser) {
-    return res
-      .status(403)
-      .json({ message: 'User already exists with given email' });
-  }
+app.get('/question/:id', questionRouter);
 
-  USERS.push({
-    id: `${USER_ID_COUNTER++}`,
-    userName,
-    email,
-    password,
-    role: 'user',
-  });
-  console.log(USERS);
-  return res.status(200).json({ message: 'User created successfully' });
-});
+app.get('/questions', questionRouter);
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
+app.post('/run', runRouter);
 
-  if (!email || !password) {
-    return res.status(401).json({ message: 'Enter all the credentials' });
-  }
+app.get('/submission/:problemId', submissionRouter);
 
-  const user = USERS.find((user) => user.email === email);
-  // loginUser(email, password);
+app.post('/submissions', submissionRouter);
 
-  if (!user) {
-    return res.status(401).json({ message: 'User not found' });
-  }
-
-  if (user.password !== password) {
-    return res.status(403).json({ message: 'Check the password' });
-  }
-  const token = jwt.sign(
-    {
-      id: user.id,
-    },
-    JWT_SECRET
-  );
-  const userId = user.id;
-  return res.status(200).json({ token, userId });
-});
-
-app.get('/me', auth, (req, res) => {
-  const user = USERS.find((user) => user.id === req.userId);
-  res.json({ user });
-});
-
-app.get('/question/:id', (req, res) => {
-  const id = req.params.id;
-
-  const question = QUESTIONS.find((question) => question.id === id);
-  if (!question) {
-    return res.status(404).json({ message: 'NOT FOUND!' });
-  } else {
-    return res.json({ question });
-  }
-});
-
-app.get('/questions', (req, res) => {
-  const filteredQuestions = QUESTIONS.map((question) => ({
-    id: question.id,
-    title: question.title,
-    difficulty: question.difficulty,
-    acceptanceRate: question.acceptanceRate,
-  }));
-
-  res.json({
-    problems: filteredQuestions,
-  });
-});
-
-app.post('/run', auth, (req, res) => {
-  const answer = Math.floor(Math.random() * 2) > 0;
-  const problemId = req.body.problemId;
-  const submission = req.body.submission;
-
-  if (answer) {
-    return res.json({
-      status: 'AC',
-    });
-  } else {
-    return res.json({
-      status: 'WA',
-    });
-  }
-});
-
-app.get('/submission/:problemId', auth, (req, res) => {
-  const problemId = req.params.problemId;
-
-  const submission = SUBMISSION.filter(
-    (x) => x.problemId === problemId && x.userId === req.userId
-  );
-  // console.log(submission);
-  res.json({ submission });
-});
-
-app.post('/submissions', auth, (req, res) => {
-  const answer = Math.floor(Math.random() * 2) > 0;
-  const problemId = req.body.problemId;
-  const submission = req.body.submission;
-  const userId = req.body.userId;
-
-  if (answer) {
-    SUBMISSION.push({
-      submission,
-      problemId,
-      userId,
-      status: 'AC',
-    });
-    // console.log(SUBMISSION);
-    return res.json({
-      submission,
-      problemId,
-      userId,
-      status: 'AC',
-    });
-  } else {
-    SUBMISSION.push({
-      submission,
-      problemId,
-      userId,
-      status: 'WA',
-    });
-    // console.log(SUBMISSION);
-    return res.json({
-      submission,
-      problemId,
-      userId,
-      status: 'WA',
-    });
-  }
-});
-
-app.post('/contact', (req, res) => {
-  const { userName, email, message } = req.body;
-
-  if (!userName || !email || !message) {
-    return res.status(400).json({ message: 'Missing or Empty required filds' });
-  }
-
-  CONTACTUS.push({
-    userName,
-    email,
-    message,
-  });
-  console.log(CONTACTUS);
-  return res.status(201).json({ mesage: 'We received your message' });
-});
+app.post('/contact', contactRouter);
 
 app.post('/admin', (req, res) => {
   const { question } = req.body.question;
