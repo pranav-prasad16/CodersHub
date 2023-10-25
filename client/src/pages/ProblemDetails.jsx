@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import logo from './../assets/logo/logo.jpg';
+import logo from './../assets/logo/png black.svg';
 
 const ProblemDetails = (props) => {
   const { pid } = useParams();

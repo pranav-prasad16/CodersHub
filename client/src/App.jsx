@@ -46,11 +46,14 @@ function App() {
             <Layout isAuthenticated={isAuthenticated} onLogout={logout} />
           }
         >
-          <Route index element={<Home />} />
+          <Route index element={<Home isAuthenticated={isAuthenticated} />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/contactsuccess" element={<ContactSuccess />} />
-          <Route path="/about" element={<About />} />
+          <Route
+            path="/about"
+            element={<About isAuthenticated={isAuthenticated} />}
+          />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupsuccess" element={<SignupSuccess />} />
           <Route

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Home = (props) => {
+  const { isAuthenticated } = props;
   return (
     <div className="container">
       <header className="text-center my-3">
@@ -56,14 +57,18 @@ const Home = () => {
           Join our vibrant coding community to embark on your coding journey.
           Create an account or sign in if you are already a member.
         </p>
-        <div className="cta-buttons mt-4">
-          <Link to="/signup" className="btn btn-primary mx-2">
-            Sign Up
-          </Link>
-          <Link to="/login" className="btn btn-success mx-2">
-            Log In
-          </Link>
-        </div>
+        {isAuthenticated ? (
+          <div></div>
+        ) : (
+          <div className="cta-buttons mt-4">
+            <Link to="/signup" className="btn btn-outline-primary mx-2">
+              Sign Up
+            </Link>
+            <Link to="/login" className="btn btn-outline-primary mx-2">
+              Log In
+            </Link>
+          </div>
+        )}
       </section>
     </div>
   );

@@ -33,7 +33,7 @@ const Login = (props) => {
         setUserId(userId);
         navigate(url);
       } else {
-        navigate('/problems'); // Redirect to /problems if problemId is not available
+        navigate('/'); // Redirect to /problems if problemId is not available
       }
     } else {
       // Error occurred

@@ -62,7 +62,7 @@ input[type='password'] {
    */
 
 .logo {
-  width: 3.125rem; /* Set the desired width */
+  width: 6rem; /* Set the desired width */
   height: auto; /* Automatically adjust height while maintaining aspect ratio */
 }
 

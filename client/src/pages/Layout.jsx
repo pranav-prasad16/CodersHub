@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import logo from './../assets/logo/logo.jpg';
+import logo from './../assets/logo/png black.svg';
 
 const Layout = (props) => {
   const { isAuthenticated, onLogout } = props;
