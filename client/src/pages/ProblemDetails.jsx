@@ -106,7 +106,7 @@ const ProblemDetails = (props) => {
     <>
       <div className="row container">
         <div className="row">
-          <div className="col-2">
+          <div className="col-5">
             <Link className="navbar-brand" to="/">
               <img
                 src={logo} // Replace with the actual path to your logo image
@@ -115,8 +115,8 @@ const ProblemDetails = (props) => {
               />
             </Link>
           </div>
-          <div className="col-2" style={{ marginTop: '.5rem' }}>
-            <Link className="nav-link" to="/problems">
+          <div className="col-6" style={{ marginTop: '.5rem' }}>
+            <Link className="problems-link" to="/problems">
               <h4>All Problems</h4>
             </Link>
           </div>
@@ -126,7 +126,7 @@ const ProblemDetails = (props) => {
             {problem.id}. {problem.title}
           </h1>
         </div>
-        <section className="col-md-8">
+        <section className="col-md-7">
           <div>
             <h4 className={`${difficultyColor(problem.difficulty)}`}>
               {problem.difficulty}
@@ -145,14 +145,15 @@ const ProblemDetails = (props) => {
             {showResult && <div>Result : {generateResult(result)}</div>}
           </div>
         </section>
-        <section className="col-md-4">
+        <section className="col-md-5">
           <div>
             <textarea
               name="code"
               onChange={(e) => setSubmission(e.target.value)}
               cols="69"
               rows="20"
-              // style={{ maxWidth: '100%' }} // Limit the width of the textarea
+              className="form-control"
+              style={{ minWidth: '300px', maxWidth: '100%' }} // Limit the width of the textarea
               placeholder="Write your code here ..."
             ></textarea>
           </div>

@@ -118,3 +118,19 @@ input[type='password'] {
   text-decoration: none;
   color: black;
 }
+
+.custom-btn {
+  color: #000; /* Set the desired text color */
+  background-color: transparent; /* Remove background color */
+  border: none; /* Remove borders if needed */
+  text-decoration: none; /* Remove underlines on links if needed */
+  cursor: pointer; /* Set the cursor to a pointer for better UX */
+}
+
+/* Example media query for smaller screens */
+@media (max-width: 768px) {
+  textarea {
+    width: 100%; /* Adjust the width for smaller screens */
+    max-width: 100%; /* Ensure it doesn't exceed the screen width */
+  }
+}
