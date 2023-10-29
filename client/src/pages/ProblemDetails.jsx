@@ -16,7 +16,7 @@ const ProblemDetails = (props) => {
 
   const init = async () => {
     const response = await fetch(
-      'https://codershub-api.onrender/question.com/' + cleanId,
+      'https://codershub-api.onrender.com/question' + cleanId,
       {
         method: 'GET',
       }
@@ -36,7 +36,7 @@ const ProblemDetails = (props) => {
 
   const postSubmit = async () => {
     const response = await fetch(
-      'https://codershub-api.onrender/submissions.com/',
+      'https://codershub-api.onrender.com/submissions',
       {
         method: 'POST',
         headers: {
@@ -57,7 +57,7 @@ const ProblemDetails = (props) => {
 
   const getSubmit = async () => {
     const response = await fetch(
-      'https://codershub-api.onrender/submission.com/' + cleanId,
+      'https://codershub-api.onrender.com/submission' + cleanId,
       {
         method: 'GET',
         headers: {
@@ -70,7 +70,7 @@ const ProblemDetails = (props) => {
   };
 
   const handleRun = async () => {
-    const response = await fetch('https://codershub-api.onrender/run.com/', {
+    const response = await fetch('https://codershub-api.onrender.com/run', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

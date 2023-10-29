@@ -14,7 +14,7 @@ const Login = (props) => {
     // console.log('Email:', email);
     // console.log('Password:', password);
 
-    const response = await fetch('https://codershub-api.onrender/login.com/', {
+    const response = await fetch('https://codershub-api.onrender.com/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

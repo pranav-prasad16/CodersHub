@@ -15,7 +15,7 @@ const Signup = () => {
     // console.log('Email:', email);
     // console.log('Password:', password);
 
-    const response = await fetch('https://codershub-api.onrender/signup.com/', {
+    const response = await fetch('https://codershub-api.onrender.com/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

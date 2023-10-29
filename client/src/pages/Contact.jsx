@@ -14,16 +14,13 @@ const Contact = () => {
     // console.log(email);
     // console.log(message);
 
-    const response = await fetch(
-      'https://codershub-api.onrender/contact.com/',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userName, email, message }),
-      }
-    );
+    const response = await fetch('https://codershub-api.onrender.com/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userName, email, message }),
+    });
     try {
       if (response.ok) {
         const json = await response.json();
