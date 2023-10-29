@@ -21,7 +21,12 @@ const port = process.env.PORT;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // For serving static files from public directory
 app.use(express.json()); // For parsing application/json
-app.use(cors());
+// Allow requests from your frontend domain
+app.use(
+  cors({
+    origin: 'https://codershub-06o7.onrender.com',
+  })
+);
 
 connectMongodB(databaseUrl);
 mongoose.connection.on('open', async () => {
