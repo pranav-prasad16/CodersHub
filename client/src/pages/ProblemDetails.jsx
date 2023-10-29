@@ -16,7 +16,7 @@ const ProblemDetails = (props) => {
 
   const init = async () => {
     const response = await fetch(
-      'https://codershub-api.onrender.com/question' + cleanId,
+      'https://codershub-api.onrender.com/question/' + cleanId,
       {
         method: 'GET',
       }
