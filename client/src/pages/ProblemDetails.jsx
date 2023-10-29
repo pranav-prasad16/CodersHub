@@ -108,7 +108,7 @@ const ProblemDetails = (props) => {
   if (!problem) {
     return (
       <div className="container text-area">
-        <h1 className="my-3">Problem Not found!</h1>
+        <h1 className="my-3">Loading ...</h1>
       </div>
     );
   }
