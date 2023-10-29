@@ -15,9 +15,12 @@ const ProblemDetails = (props) => {
   const { userId } = props;
 
   const init = async () => {
-    const response = await fetch('http://localhost:3000/question/' + cleanId, {
-      method: 'GET',
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender/question.com/' + cleanId,
+      {
+        method: 'GET',
+      }
+    );
     const json = await response.json();
     setProblem(json.question);
   };
@@ -32,18 +35,21 @@ const ProblemDetails = (props) => {
   }, []);
 
   const postSubmit = async () => {
-    const response = await fetch('http://localhost:3000/submissions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: localStorage.getItem('Token'),
-      },
-      body: JSON.stringify({
-        problemId: cleanId,
-        submission: submission,
-        userId: userId,
-      }),
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender/submissions.com/',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: localStorage.getItem('Token'),
+        },
+        body: JSON.stringify({
+          problemId: cleanId,
+          submission: submission,
+          userId: userId,
+        }),
+      }
+    );
 
     const json = await response.json();
     console.log(json);
@@ -51,7 +57,7 @@ const ProblemDetails = (props) => {
 
   const getSubmit = async () => {
     const response = await fetch(
-      'http://localhost:3000/submission/' + cleanId,
+      'https://codershub-api.onrender/submission.com/' + cleanId,
       {
         method: 'GET',
         headers: {
@@ -64,7 +70,7 @@ const ProblemDetails = (props) => {
   };
 
   const handleRun = async () => {
-    const response = await fetch('http://localhost:3000/run', {
+    const response = await fetch('https://codershub-api.onrender/run.com/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
