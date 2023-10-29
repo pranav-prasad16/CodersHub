@@ -18,13 +18,13 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'User not found' });
     }
 
-    console.log('User-Submitted Password:', password);
-    console.log('Stored Hashed Password:', user.password);
+    // console.log('User-Submitted Password:', password);
+    // console.log('Stored Hashed Password:', user.password);
 
     // Use await to correctly wait for the comparison to complete
     // const passwordMatch = await bcrypt.compare(password, user.password);
     const passwordMatch = password === user.password ? true : false;
-    console.log('Password Match:', passwordMatch);
+    // console.log('Password Match:', passwordMatch);
 
     if (!passwordMatch) {
       return res.status(403).json({ message: 'Check the password' });
@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
       JWT_SECRET
     );
     const userId = user.id;
-    console.log('Logged in successfully!');
+    // console.log('Logged in successfully!');
     return res.status(200).json({ token, userId });
   } catch (err) {
     console.log('Error : ', err);

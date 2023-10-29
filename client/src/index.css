@@ -133,4 +133,9 @@ input[type='password'] {
     width: 100%; /* Adjust the width for smaller screens */
     max-width: 100%; /* Ensure it doesn't exceed the screen width */
   }
+  /* Replace '.btn' with the specific Bootstrap class you want to target */
+  .btn {
+    transition: none; /* Remove hover effect */
+    /* You can also override other styles as needed */
+  }
 }

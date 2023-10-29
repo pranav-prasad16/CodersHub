@@ -1,11 +1,8 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const app = express();
 const mongoose = require('mongoose');
-const port = 3000;
-const { auth } = require('./middleware/middleware');
-const JWT_SECRET = 'secret';
 const cors = require('cors');
+require('dotenv').config();
 const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
 const meRouter = require('./routes/me');
@@ -18,15 +15,15 @@ const { loadLocalQuestionsToDatabase } = require('./scripts/loadQuesTodB');
 const { loadLocalSubmissionsToDatabase } = require('./scripts/loadSubmTodB');
 const { loadLocalContactsToDatabase } = require('./scripts/loadContactTodB');
 const { connectMongodB } = require('./config/database');
+const databaseUrl = process.env.DATABASE_URL;
+const port = process.env.PORT;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // For serving static files from public directory
 app.use(express.json()); // For parsing application/json
 app.use(cors());
 
-connectMongodB(
-  'mongodb+srv://pranavprasad016:VvHYJqiRfbqc3YIx@cluster0.vfkgfz8.mongodb.net/CodersHub?retryWrites=true&w=majority'
-);
+connectMongodB(databaseUrl);
 mongoose.connection.on('open', async () => {
   const User = mongoose.model('User');
   const Question = mongoose.model('Question');

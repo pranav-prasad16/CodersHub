@@ -1,5 +1,7 @@
-const JWT_SECRET = 'secret';
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const secretKey = process.env.SECRET_KEY;
+const JWT_SECRET = secretKey;
 
 module.exports = {
   auth: (req, res, next) => {

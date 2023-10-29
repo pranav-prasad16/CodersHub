@@ -11,9 +11,9 @@ const Signup = () => {
 
   const handleSignup = async () => {
     // Implement user registration logic here
-    console.log('User Name:', userName);
-    console.log('Email:', email);
-    console.log('Password:', password);
+    // console.log('User Name:', userName);
+    // console.log('Email:', email);
+    // console.log('Password:', password);
 
     const response = await fetch('http://localhost:3000/signup', {
       method: 'POST',

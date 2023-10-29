@@ -11,8 +11,8 @@ const Login = (props) => {
 
   const handleLogin = async () => {
     // Implement authentication logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
+    // console.log('Email:', email);
+    // console.log('Password:', password);
 
     const response = await fetch('http://localhost:3000/login', {
       method: 'POST',

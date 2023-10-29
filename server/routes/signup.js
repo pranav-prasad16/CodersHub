@@ -33,8 +33,8 @@ router.post('/signup', async (req, res) => {
 
     // const hashedPassword = await bcrypt.hash(password, 10);
     const hashedPassword = password;
-    console.log('Password entered : ', password);
-    console.log('Hashed Password : ', hashedPassword);
+    // console.log('Password entered : ', password);
+    // console.log('Hashed Password : ', hashedPassword);
 
     const user = new User({
       id: nextUserId,
@@ -46,7 +46,7 @@ router.post('/signup', async (req, res) => {
 
     USERS.push(user);
     await user.save();
-    console.log('User created successfully:', user);
+    // console.log('User created successfully:', user);
     return res.status(200).json({ message: 'User created successfully' });
   } catch (err) {
     console.log('Error : ', err);

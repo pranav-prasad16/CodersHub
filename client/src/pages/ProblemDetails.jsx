@@ -100,7 +100,11 @@ const ProblemDetails = (props) => {
   };
 
   if (!problem) {
-    return <h1>Problem Not found!</h1>;
+    return (
+      <div className="container text-area">
+        <h1 className="my-3">Problem Not found!</h1>
+      </div>
+    );
   }
   return (
     <>

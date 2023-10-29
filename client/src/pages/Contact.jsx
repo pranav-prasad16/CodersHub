@@ -10,9 +10,9 @@ const Contact = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    console.log(userName);
-    console.log(email);
-    console.log(message);
+    // console.log(userName);
+    // console.log(email);
+    // console.log(message);
 
     const response = await fetch('http://localhost:3000/contact', {
       method: 'POST',

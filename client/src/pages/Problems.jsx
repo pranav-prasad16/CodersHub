@@ -19,7 +19,7 @@ const Problems = (props) => {
   };
 
   const handleProblemClick = (id) => {
-    console.log(`Clicked problem with ID: ${id}`);
+    // console.log(`Clicked problem with ID: ${id}`);
     if (id) {
       setProblemId(id);
     }
