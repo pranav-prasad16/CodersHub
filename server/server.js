@@ -1,85 +1,70 @@
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const Docker = require('dockerode');
+const databaseUrl = process.env.DATABASE_URL;
+
+//routes
 const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
-const meRouter = require('./routes/me');
+const profileRouter = require('./routes/profile');
 const questionRouter = require('./routes/question');
 const runRouter = require('./routes/run');
 const submissionRouter = require('./routes/submission');
 const contactRouter = require('./routes/contact');
-const { loadLocalUsersToDatabase } = require('./scripts/loadUsersTodB');
-const { loadLocalQuestionsToDatabase } = require('./scripts/loadQuesTodB');
-const { loadLocalSubmissionsToDatabase } = require('./scripts/loadSubmTodB');
-const { loadLocalContactsToDatabase } = require('./scripts/loadContactTodB');
-const { connectMongodB } = require('./config/database');
-const databaseUrl = process.env.DATABASE_URL;
+
+const { mongodbConnect } = require('./config/database');
+
+const authMiddleware = require('./middleware/auth');
+
+// Load environment variables from the .env file
+dotenv.config();
+
+const app = express();
 const port = process.env.PORT;
 
+// Allow requests from the frontend
+const corsOptions = {
+  origin: 'http://localhost:2717',
+  methods: 'GET, PUT, PATCH POST, DELETE',
+  credentials: true,
+  OptionSuccessStaus: 204,
+};
+
+// using cors middleware
+app.use(cors(corsOptions));
+
+mongoose
+  .connect(databaseUrl)
+  .then(() => console.log('Mongodb connected'))
+  .catch((err) => console.log('Error', err));
+
+//middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // For serving static files from public directory
 app.use(express.json()); // For parsing application/json
-// Allow requests from your frontend domain
-app.use(
-  cors({
-    origin: 'https://codershub-06o7.onrender.com',
-  })
-);
-
-connectMongodB(databaseUrl);
-mongoose.connection.on('open', async () => {
-  const User = mongoose.model('User');
-  const Question = mongoose.model('Question');
-  const Submission = mongoose.model('Submission');
-  const Contact = mongoose.model('Contact');
-
-  // Check if there are any existing users in the database
-  const existingUsers = await User.find();
-  const existingQuestions = await Question.find();
-  const existingSubmissions = await Submission.find();
-  const existingContacts = await Contact.find();
-
-  // If there are no existing users, load the data
-  if (existingUsers.length === 0) {
-    loadLocalUsersToDatabase();
-  }
-  if (existingQuestions.length === 0) {
-    loadLocalQuestionsToDatabase();
-  }
-  if (existingSubmissions.length === 0) {
-    loadLocalSubmissionsToDatabase();
-  }
-  if (existingContacts.length === 0) {
-    loadLocalContactsToDatabase();
-  }
-});
 
 app.get('/', (req, res) => {
   res.send('Hello everyone!');
   // console.log(USERS);
 });
 
-app.post('/signup', signupRouter);
+app.use('/api/signup', signupRouter);
 
-app.post('/login', loginRouter);
+app.use('/api/login', loginRouter);
 
-app.get('/me', meRouter);
+app.use('/api/profile', profileRouter);
 
-app.get('/question/:id', questionRouter);
+app.use('/api/questions', questionRouter);
 
-app.get('/questions', questionRouter);
+app.use('/api/run', runRouter);
 
-app.post('/run', runRouter);
+app.use('/api/submissions', submissionRouter);
 
-app.get('/submission/:problemId', submissionRouter);
+app.use('/api/contact', contactRouter);
 
-app.post('/submissions', submissionRouter);
-
-app.post('/contact', contactRouter);
-
-app.post('/admin', (req, res) => {
+app.use('/api/admin', (req, res) => {
   const { question } = req.body.question;
 
   QUESTIONS.push(question);

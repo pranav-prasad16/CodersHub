@@ -1,0 +1,7 @@
+# Dockerfile
+FROM gcc:latest
+
+WORKDIR /app
+COPY . /app
+
+CMD ["g++", "user_code.cpp", "-o", "user_app", "&&", "./user_app"]

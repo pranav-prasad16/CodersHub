@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { auth } = require('../middleware/middleware');
+const authMiddleware = require('../middleware/auth');
 
-router.post('/run', auth, (req, res) => {
+router.use(authMiddleware);
+
+router.post('/', async (req, res) => {
   const answer = Math.floor(Math.random() * 2) > 0;
   const problemId = req.body.problemId;
   const submission = req.body.submission;

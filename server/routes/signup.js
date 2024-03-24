@@ -1,55 +1,28 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const router = express.Router();
 const User = require('../models/user-model');
-const USERS = require('../data/users');
+const router = express.Router();
 
-router.post('/signup', async (req, res) => {
-  const { userName, email, password } = req.body;
+router.post('/', async (req, res) => {
+  const userData = req.body;
 
-  if (!userName || !email || !password) {
+  if (!userData.userName || !userData.email || !userData.password) {
     return res.status(401).json({ message: 'Enter all the credentials' });
   }
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
       return res
         .status(403)
         .json({ message: 'User already exists with given email' });
     }
 
-    // Fetch the last user's ID from the database
-    const lastUser = await User.findOne({}, {}, { sort: { id: -1 } });
+    const user = await User.create(userData);
 
-    let nextUserId;
-    if (lastUser) {
-      // If there's an existing user, increment the ID
-      nextUserId = String(Number(lastUser.id) + 1);
-    } else {
-      // If no user exists, start with ID 1
-      nextUserId = '1';
-    }
-
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    const hashedPassword = password;
-    // console.log('Password entered : ', password);
-    // console.log('Hashed Password : ', hashedPassword);
-
-    const user = new User({
-      id: nextUserId,
-      userName,
-      email,
-      password: hashedPassword,
-      role: 'user',
-    });
-
-    USERS.push(user);
-    await user.save();
-    // console.log('User created successfully:', user);
+    console.log('User created successfully:', user);
     return res.status(200).json({ message: 'User created successfully' });
-  } catch (err) {
-    console.log('Error : ', err);
+  } catch (error) {
+    console.log('Error : ', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });

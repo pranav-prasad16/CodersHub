@@ -1,29 +1,33 @@
 const express = require('express');
-const router = express.Router();
 const Question = require('../models/question-model');
+const router = express.Router();
+const authMiddleware = require('../middleware/auth');
 
-router.get('/questions', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const questions = await Question.find({}, '-__v'); // Exclude the __v field
-    res.json({ problems: questions });
+    const questions = await Question.find();
+    return res.status(200).json({ problems: questions });
   } catch (err) {
-    res
+    return res
       .status(500)
       .json({ error: 'Failed to retrieve questions from the database' });
   }
 });
 
-router.get('/question/:id', async (req, res) => {
-  const id = req.params.id;
+router.use(authMiddleware);
+
+router.get('/:questionId', async (req, res) => {
+  const questionId = req.params.questionId;
 
   try {
-    const question = await Question.findOne({ id });
+    const question = await Question.findById(questionId);
     if (!question) {
       return res.status(404).json({ message: 'Question not found' });
     }
-    res.json({ question });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to retrieve the question' });
+    return res.status(200).json({ question });
+  } catch (error) {
+    console.log('Error : ', error);
+    return res.status(500).json({ error: 'Failed to retrieve the question' });
   }
 });
 

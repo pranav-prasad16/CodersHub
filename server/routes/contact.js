@@ -1,30 +1,23 @@
 const express = require('express');
-const router = express.Router();
 const Contact = require('../models/contact-model');
-const CONTACTS = require('../data/contacts');
+const router = express.Router();
 
-router.post('/contact', async (req, res) => {
-  const { userName, email, message } = req.body;
+router.post('/', async (req, res) => {
+  const contactData = req.body;
 
-  if (!userName || !email || !message) {
-    return res
-      .status(400)
-      .json({ message: 'Missing or Empty required fields' });
+  if (!contactData.userName || !contactData.email || !contactData.message) {
+    return res.status(409).json({ message: 'Required fields are empty' });
   }
 
   try {
-    // Create a new Contact document
-    const newContact = new Contact({
-      userName,
-      email,
-      message,
-    });
+    const newContact = await Contact.create(contactData);
+    console.log(newContact);
 
-    // Save the contact message to the database
-    await newContact.save();
-
-    return res.status(201).json({ message: 'We received your message' });
+    return res
+      .status(201)
+      .json({ message: 'Thanks for connecting we will get to you soon' });
   } catch (error) {
+    console.log('Error : ', error);
     return res.status(500).json({ message: 'Failed to save the message' });
   }
 });

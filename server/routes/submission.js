@@ -1,51 +1,55 @@
 const express = require('express');
+const Submission = require('../models/submission-model');
 const router = express.Router();
-const { auth } = require('../middleware/middleware');
-const Submission = require('../models/submission-model'); // Import your Submission model
+const authMiddleware = require('../middleware/auth');
 
-router.post('/submissions', auth, async (req, res) => {
-  const answer = Math.floor(Math.random() * 2) > 0;
-  const problemId = req.body.problemId;
-  const submissionText = req.body.submission;
-  const userId = req.userId; // Assuming you have the user ID from the authentication middleware
+router.use(authMiddleware);
 
-  try {
+router
+  .post('/', async (req, res) => {
+    const answer = Math.floor(Math.random() * 2) > 0;
+    const { problemId, code } = req.body;
+    const userId = req.userId; // Assuming you have the user ID from the authentication middleware
     const status = answer ? 'AC' : 'WA';
 
-    // Create a new Submission document
-    const newSubmission = new Submission({
-      submission: submissionText,
-      problemId,
-      userId,
-      status,
-    });
+    if (!code || !problemId || !userId || !status) {
+      return res.status(401).json({ msg: 'Required fields are empty' });
+    }
 
-    // Save the submission to the database
-    await newSubmission.save();
+    const newSubmission = {
+      problemId: problemId,
+      code: code,
+      userId: userId,
+      status: status,
+    };
+    try {
+      const submission = await Submission.create(newSubmission);
 
-    return res.json({
-      submission: submissionText,
-      problemId,
-      userId,
-      status,
-    });
-  } catch (error) {
-    return res.status(500).json({ message: 'Failed to save the submission' });
-  }
-});
+      console.log(submission);
+      return res.status(201).json({ msg: 'Code submitted successfully' });
+    } catch (error) {
+      console.log('Error : ', error);
+      return res.status(500).json({ message: 'Failed to save the submission' });
+    }
+  })
+  .get('/:problemId', async (req, res) => {
+    const problemId = req.params.problemId;
+    const userId = req.userId; // Assuming you have the user ID from the authentication middleware
 
-router.get('/submission/:problemId', auth, async (req, res) => {
-  const problemId = req.params.problemId;
-  const userId = req.userId; // Assuming you have the user ID from the authentication middleware
-
-  try {
-    // Find all submissions for the specified problem ID and user ID
-    const submissions = await Submission.find({ problemId, userId });
-
-    res.json({ submissions });
-  } catch (error) {
-    return res.status(500).json({ message: 'Failed to retrieve submissions' });
-  }
-});
+    try {
+      // Find all submissions for the specified problem ID and user ID
+      const submissions = await Submission.find({ problemId, userId });
+      if (!submissions) {
+        return res
+          .status(404)
+          .json({ msg: 'No submission for the user found' });
+      }
+      return res.status(200).json(submissions);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: 'Failed to retrieve submissions' });
+    }
+  });
 
 module.exports = router;
