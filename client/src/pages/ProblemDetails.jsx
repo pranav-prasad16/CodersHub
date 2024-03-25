@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import logo from './../assets/logo/png black.svg';
+import Editor from '@monaco-editor/react';
 
 const ProblemDetails = (props) => {
   const { pid } = useParams();
-  const cleanId = pid.substring(0);
   const [problem, setProblem] = useState('');
   const [submission, setSubmission] = useState('');
   const [result, setResult] = useState('');
@@ -15,12 +15,9 @@ const ProblemDetails = (props) => {
   const { userId } = props;
 
   const init = async () => {
-    const response = await fetch(
-      'https://codershub-api.onrender.com/question/' + cleanId,
-      {
-        method: 'GET',
-      }
-    );
+    const response = await fetch('http://localhost:3000/api/questions' + pid, {
+      method: 'GET',
+    });
     const json = await response.json();
     setProblem(json.question);
   };
@@ -35,21 +32,18 @@ const ProblemDetails = (props) => {
   }, []);
 
   const postSubmit = async () => {
-    const response = await fetch(
-      'https://codershub-api.onrender.com/submissions',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: localStorage.getItem('Token'),
-        },
-        body: JSON.stringify({
-          problemId: cleanId,
-          submission: submission,
-          userId: userId,
-        }),
-      }
-    );
+    const response = await fetch('http://localhost:3000/api/submissions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: localStorage.getItem('Token'),
+      },
+      body: JSON.stringify({
+        problemId: pid,
+        submission: submission,
+        userId: userId,
+      }),
+    });
 
     const json = await response.json();
     console.log(json);
@@ -57,7 +51,7 @@ const ProblemDetails = (props) => {
 
   const getSubmit = async () => {
     const response = await fetch(
-      'https://codershub-api.onrender.com/submission' + cleanId,
+      'http://localhost:3000/api/submissions' + pid,
       {
         method: 'GET',
         headers: {
@@ -70,14 +64,14 @@ const ProblemDetails = (props) => {
   };
 
   const handleRun = async () => {
-    const response = await fetch('https://codershub-api.onrender.com/run', {
+    const response = await fetch('http://loalhost:3000/api/run', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         authorization: localStorage.getItem('Token'),
       },
       body: JSON.stringify({
-        problemId: cleanId,
+        problemId: pid,
         submission: submission,
       }),
     });

@@ -1,4 +1,4 @@
-const USERS = [
+[
   {
     id: '1',
     userName: 'james',
@@ -22,5 +22,3 @@ const USERS = [
   },
   // Add more user objects as needed
 ];
-
-module.exports = USERS; // Export the USERS array

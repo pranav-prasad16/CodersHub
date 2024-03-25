@@ -10,12 +10,9 @@ const Problems = (props) => {
   const problemsPerPage = 10; // Number of problems to display per page
 
   const init = async () => {
-    const response = await fetch(
-      'https://codershub-api.onrender.com/questions',
-      {
-        method: 'GET',
-      }
-    );
+    const response = await fetch('http://localhost:3000/api/questions', {
+      method: 'GET',
+    });
 
     const json = await response.json();
     setProblems(json.problems);
@@ -65,12 +62,12 @@ const Problems = (props) => {
         </thead>
         <tbody>
           {displayedProblems.map((problem, index) => (
-            <tr key={problem.id}>
+            <tr key={problem._id}>
               <th>{problem.id}</th>
               <td>
                 <Link
-                  to={`/problem/${problem.id}`} // Remove ':' before problem.id
-                  onClick={() => handleProblemClick(problem.id)}
+                  to={`/problem/${problem._id}`} // Remove ':' before problem.id
+                  onClick={() => handleProblemClick(problem._id)}
                   className="problems-link"
                 >
                   {problem.title}

@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const Docker = require('dockerode');
-const databaseUrl = process.env.DATABASE_URL;
 
 //routes
 const signupRouter = require('./routes/signup');
@@ -14,31 +13,24 @@ const runRouter = require('./routes/run');
 const submissionRouter = require('./routes/submission');
 const contactRouter = require('./routes/contact');
 
-const { mongodbConnect } = require('./config/database');
+// const { mongodbConnect } = require('./config/database');
 
 const authMiddleware = require('./middleware/auth');
 
 // Load environment variables from the .env file
 dotenv.config();
+const uri = process.env.DATABASE_URL;
 
 const app = express();
-const port = process.env.PORT;
-
-// Allow requests from the frontend
-const corsOptions = {
-  origin: 'http://localhost:2717',
-  methods: 'GET, PUT, PATCH POST, DELETE',
-  credentials: true,
-  OptionSuccessStaus: 204,
-};
-
-// using cors middleware
-app.use(cors(corsOptions));
+const port = process.env.PORT || 3000;
 
 mongoose
-  .connect(databaseUrl)
+  .connect(uri)
   .then(() => console.log('Mongodb connected'))
   .catch((err) => console.log('Error', err));
+
+// using cors middleware
+app.use(cors());
 
 //middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -66,8 +58,12 @@ app.use('/api/contact', contactRouter);
 
 app.use('/api/admin', (req, res) => {
   const { question } = req.body.question;
+});
 
-  QUESTIONS.push(question);
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
 app.listen(port, () => {

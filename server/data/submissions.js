@@ -1,4 +1,4 @@
-const SUBMISSION = [
+[
   {
     submission: `print('hello world')`,
     problemId: '29',
@@ -6,5 +6,3 @@ const SUBMISSION = [
     status: 'WA',
   },
 ];
-
-module.exports = SUBMISSION;

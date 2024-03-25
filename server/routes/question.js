@@ -6,6 +6,9 @@ const authMiddleware = require('../middleware/auth');
 router.get('/', async (req, res) => {
   try {
     const questions = await Question.find();
+    if (!questions) {
+      return res.status(404).json({ msg: 'No questions found' });
+    }
     return res.status(200).json({ problems: questions });
   } catch (err) {
     return res
