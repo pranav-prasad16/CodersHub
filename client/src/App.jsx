@@ -21,14 +21,13 @@ function App() {
   // Function to simulate a login
   const login = (token) => {
     localStorage.setItem('Token', token);
-
     setIsAuthenticated(true);
   };
 
   // Function to simulate a logout
   const logout = () => {
     localStorage.removeItem('Token');
-
+    localStorage.removeItem('UserId');
     setIsAuthenticated(false);
   };
 

@@ -7,7 +7,7 @@ import Editor from '@monaco-editor/react';
 const ProblemDetails = (props) => {
   const { pid } = useParams();
   const [problem, setProblem] = useState('');
-  const [submission, setSubmission] = useState('');
+  const [submittedCode, setSubmittedCode] = useState('');
   const [result, setResult] = useState('');
   const [showResult, setShowResult] = useState(false); // New state for result visibility
   const [submissions, setSubmissions] = useState([]);
@@ -15,11 +15,15 @@ const ProblemDetails = (props) => {
   const { userId } = props;
 
   const init = async () => {
-    const response = await fetch('http://localhost:3000/api/questions' + pid, {
+    const response = await fetch('http://localhost:3000/api/questions/' + pid, {
       method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
+      },
     });
-    const json = await response.json();
-    setProblem(json.question);
+    const problem = await response.json();
+    setProblem(problem);
   };
 
   const handleSubmit = () => {
@@ -36,12 +40,12 @@ const ProblemDetails = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: localStorage.getItem('Token'),
+        authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
       },
       body: JSON.stringify({
         problemId: pid,
-        submission: submission,
-        userId: userId,
+        submittedCode: submittedCode,
+        userId: `${localStorage.getItem('UserId')}`,
       }),
     });
 
@@ -51,11 +55,12 @@ const ProblemDetails = (props) => {
 
   const getSubmit = async () => {
     const response = await fetch(
-      'http://localhost:3000/api/submissions' + pid,
+      'http://localhost:3000/api/submissions/' + pid,
       {
         method: 'GET',
         headers: {
-          authorization: localStorage.getItem('Token'),
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
         },
       }
     );
@@ -64,23 +69,21 @@ const ProblemDetails = (props) => {
   };
 
   const handleRun = async () => {
-    const response = await fetch('http://loalhost:3000/api/run', {
+    const response = await fetch('http://localhost:3000/api/run', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: localStorage.getItem('Token'),
+        authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
       },
       body: JSON.stringify({
         problemId: pid,
-        submission: submission,
+        submittedCode: submittedCode,
       }),
     });
 
     const json = await response.json();
     setResult(json.status);
     setShowResult(true);
-    console.log(result);
-    console.log(json);
   };
 
   const difficultyColor = (value) => {
@@ -102,7 +105,7 @@ const ProblemDetails = (props) => {
   if (!problem) {
     return (
       <div className="container text-area">
-        <h1 className="my-3">Loading ...</h1>
+        <h1 className="my-3">This problem doesn't exist!</h1>
       </div>
     );
   }
@@ -151,15 +154,19 @@ const ProblemDetails = (props) => {
         </section>
         <section className="col-md-5">
           <div>
-            <textarea
-              name="code"
-              onChange={(e) => setSubmission(e.target.value)}
-              cols="69"
-              rows="20"
-              className="form-control"
-              style={{ minWidth: '300px', maxWidth: '100%' }} // Limit the width of the textarea
-              placeholder="Write your code here ..."
-            ></textarea>
+            <h5>Write your code here : </h5>
+            <Editor
+              width="100%"
+              height="100vh"
+              theme="vs-dark"
+              language="javascript"
+              value={submittedCode}
+              onChange={setSubmittedCode}
+              options={{
+                minimap: { enabled: false }, // Disable the minimap
+                automaticLayout: true, // Auto-resize the editor
+              }}
+            />
           </div>
           <div className="d-grid gap-1 d-md-flex">
             <button

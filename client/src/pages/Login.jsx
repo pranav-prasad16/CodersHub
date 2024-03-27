@@ -28,9 +28,10 @@ const Login = (props) => {
       const token = json.token;
       const userId = json.userId;
       onLogin(token);
+      localStorage.setItem('UserId', userId);
+      setUserId(userId);
       const url = `/problem/${problemId}`;
       if (problemId) {
-        setUserId(userId);
         navigate(url);
       } else {
         navigate('/'); // Redirect to /problems if problemId is not available

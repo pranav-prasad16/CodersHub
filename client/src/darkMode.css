@@ -1,0 +1,64 @@
+/* Dark Mode Styles */
+
+/* Container styles */
+.login-container,
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #333; /* Adjust border color */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Adjust box shadow */
+}
+
+/* Heading styles */
+.login-container h2,
+.signup-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff; /* Set text color to white */
+}
+
+/* Form styles */
+.form-group label {
+  color: #fff; /* Set label color to white */
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #666; /* Adjust input border color */
+  border-radius: 5px;
+  outline: none;
+  background-color: #333; /* Set input background color */
+  color: #fff; /* Set input text color to white */
+}
+
+/* Navigation link styles */
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  overflow: hidden;
+  color: #fff; /* Set link color to white */
+}
+
+.nav-link::before,
+.nav-link::after {
+  background-color: #fff; /* Set line color to white */
+}
+
+/* Button styles */
+.btn,
+.logo-btn {
+  color: #fff; /* Set button text color to white */
+  background-color: #333; /* Set button background color */
+  border: 1px solid #666; /* Adjust button border color */
+}
+
+/* Button hover styles */
+.btn:hover,
+.logo-btn:hover {
+  background-color: #555; /* Darken button background color on hover */
+}

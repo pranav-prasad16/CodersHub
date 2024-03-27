@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import logo from './../assets/logo/png black.svg';
+import ThemeToggleButton from '../components/ThemeToggleButton';
 
 const Layout = (props) => {
   const { isAuthenticated, onLogout } = props;
@@ -55,6 +56,9 @@ const Layout = (props) => {
                 <Link className="nav-link" to="/about">
                   About Us
                 </Link>
+              </li>
+              <li>
+                <ThemeToggleButton />
               </li>
             </ul>
             {isAuthenticated ? (

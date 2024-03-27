@@ -7,7 +7,7 @@ const Problems = (props) => {
   const [problems, setProblems] = useState([]);
   const { setProblemId } = props;
   const [currentPage, setCurrentPage] = useState(1);
-  const problemsPerPage = 10; // Number of problems to display per page
+  const problemsPerPage = 15; // Number of problems to display per page
 
   const init = async () => {
     const response = await fetch('http://localhost:3000/api/questions', {

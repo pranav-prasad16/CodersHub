@@ -8,33 +8,35 @@ router.use(authMiddleware);
 router
   .post('/', async (req, res) => {
     const answer = Math.floor(Math.random() * 2) > 0;
-    const { problemId, code } = req.body;
-    const userId = req.userId; // Assuming you have the user ID from the authentication middleware
+    const { userId, problemId, submittedCode } = req.body;
     const status = answer ? 'AC' : 'WA';
 
-    if (!code || !problemId || !userId || !status) {
+    if (!submittedCode || !problemId || !userId || !status) {
+      console.log(submittedCode, problemId, userId, status);
       return res.status(401).json({ msg: 'Required fields are empty' });
     }
 
     const newSubmission = {
       problemId: problemId,
-      code: code,
+      submittedCode: submittedCode,
       userId: userId,
       status: status,
     };
     try {
-      const submission = await Submission.create(newSubmission);
+      const submittedCode = await Submission.create(newSubmission);
 
-      console.log(submission);
+      console.log(submittedCode);
       return res.status(201).json({ msg: 'Code submitted successfully' });
     } catch (error) {
       console.log('Error : ', error);
-      return res.status(500).json({ message: 'Failed to save the submission' });
+      return res
+        .status(500)
+        .json({ message: 'Failed to save the submittedCode' });
     }
   })
   .get('/:problemId', async (req, res) => {
     const problemId = req.params.problemId;
-    const userId = req.userId; // Assuming you have the user ID from the authentication middleware
+    const { userId } = req.body; // Assuming you have the user ID from the authentication middleware
 
     try {
       // Find all submissions for the specified problem ID and user ID
@@ -42,7 +44,7 @@ router
       if (!submissions) {
         return res
           .status(404)
-          .json({ msg: 'No submission for the user found' });
+          .json({ msg: 'No submittedCode for the user found' });
       }
       return res.status(200).json(submissions);
     } catch (error) {
