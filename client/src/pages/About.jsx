@@ -43,28 +43,33 @@ const About = (props) => {
       </section>
 
       <section className="get-started mt-5">
-        <h2>Get Started</h2>
-        <p>
-          Ready to embark on your coding journey? Join our coding community to
-          get started. Create an account or sign in if you're already a member.
-        </p>
         {isAuthenticated ? (
           <div></div>
         ) : (
-          <div className="cta-buttons mt-3 d-flex justify-content-start">
-            <Link className="nav-link mx-2" to="/login">
-              <button className="btn btn-outline-primary">Login</button>
-            </Link>
-            <Link className="nav-link mx-2" to="/signup">
-              <button className="btn btn-outline-primary">Signup</button>
-            </Link>
-          </div>
+          <>
+            <div className="get-started mt-5">
+              <h2>Get Started</h2>
+              <p>
+                Ready to embark on your coding journey? Join our coding
+                community to get started. Create an account or sign in if you're
+                already a member.
+              </p>
+            </div>
+            <div className="cta-buttons mt-3 d-flex justify-content-start">
+              <Link className="nav-link mx-2" to="/login">
+                <button className="custom-btn-purple">Login</button>
+              </Link>
+              <Link className="nav-link mx-2" to="/signup">
+                <button className="custom-btn-purple">Signup</button>
+              </Link>
+            </div>
+          </>
         )}
       </section>
 
       <section className="contact-us mt-5">
         <h2>Want to get in touch?</h2>
-        <Link to="/contact" className="btn btn-outline-success">
+        <Link to="/contact" className="custom-btn-blue">
           Contact Us
         </Link>
       </section>

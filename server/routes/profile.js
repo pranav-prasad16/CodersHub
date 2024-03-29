@@ -5,13 +5,14 @@ const authMiddleware = require('../middleware/auth');
 
 router.use(authMiddleware);
 
-router.get('/', async (req, res) => {
-  const userId = req.user.id;
+router.get('/:userId', async (req, res) => {
+  const userId = req.params.userId;
   try {
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: 'User not found!' });
     }
+    console.log(user);
     return res.status(200).json({ user });
   } catch (error) {
     console.log('Error : ', error);

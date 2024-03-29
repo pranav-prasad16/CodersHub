@@ -77,7 +77,7 @@ const Signup = () => {
             <button
               type="button"
               onClick={handleSignup}
-              className="btn btn-primary"
+              className="custom-btn-purple"
             >
               Sign Up
             </button>

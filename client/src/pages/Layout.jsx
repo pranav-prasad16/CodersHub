@@ -1,13 +1,14 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import logo from './../assets/logo/png black.svg';
+import profileImg from './../assets/logo/profile-user.png';
 import ThemeToggleButton from '../components/ThemeToggleButton';
 
 const Layout = (props) => {
   const { isAuthenticated, onLogout } = props;
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-customize">
         <div className="container">
           <Link className="navbar-brand" to="/">
             <img
@@ -57,14 +58,11 @@ const Layout = (props) => {
                   About Us
                 </Link>
               </li>
-              <li>
-                <ThemeToggleButton />
-              </li>
             </ul>
             {isAuthenticated ? (
               <ul className="navbar-nav">
                 <li className="nav-item" to="/logout">
-                  <button className="btn btn-success" onClick={onLogout}>
+                  <button className="custom-btn-nav" onClick={onLogout}>
                     Logout
                   </button>
                 </li>
@@ -73,12 +71,12 @@ const Layout = (props) => {
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">
-                    <button className="btn btn-success">Login</button>
+                    <button className="custom-btn-nav ">Login</button>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/signup">
-                    <button className="btn btn-success">Signup</button>
+                    <button className="custom-btn-nav">Signup</button>
                   </Link>
                 </li>
               </ul>

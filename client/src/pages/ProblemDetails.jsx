@@ -111,23 +111,23 @@ const ProblemDetails = (props) => {
   }
   return (
     <>
-      <div className="row container">
-        <div className="row">
-          <div className="col-5">
-            <Link className="navbar-brand" to="/">
-              <img
-                src={logo} // Replace with the actual path to your logo image
-                alt="Your Logo"
-                className="logo"
-              />
-            </Link>
-          </div>
-          <div className="col-6" style={{ marginTop: '.5rem' }}>
-            <Link className="problems-link" to="/problems">
-              <h4>All Problems</h4>
-            </Link>
-          </div>
+      <div className="row bg-customize custom-container">
+        <div className="col-5">
+          <Link className="navbar-brand" to="/">
+            <img
+              src={logo} // Replace with the actual path to your logo image
+              alt="Your Logo"
+              className="logo"
+            />
+          </Link>
         </div>
+        <div className="col-6" style={{ marginTop: '.5rem' }}>
+          <Link className="all-problems-link" to="/problems">
+            <h4>All Problems</h4>
+          </Link>
+        </div>
+      </div>
+      <div className="row container">
         <div>
           <h1>
             {problem.id}. {problem.title}
@@ -156,7 +156,7 @@ const ProblemDetails = (props) => {
           <div>
             <h5>Write your code here : </h5>
             <Editor
-              width="100%"
+              max-width="100%"
               height="100vh"
               theme="vs-dark"
               language="javascript"
@@ -172,14 +172,14 @@ const ProblemDetails = (props) => {
             <button
               type="button"
               onClick={handleRun}
-              className="btn btn-success"
+              className="custom-btn-purple"
             >
               Run
             </button>
             <button
               type="button"
               onClick={handleSubmit}
-              className="btn btn-success"
+              className="custom-btn-purple"
             >
               Submit
             </button>

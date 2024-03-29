@@ -88,7 +88,7 @@ const Contact = () => {
 
             <button
               type="button"
-              className="btn btn-primary"
+              className="custom-btn-purple"
               onClick={handleSubmit}
             >
               Submit

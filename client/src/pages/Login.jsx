@@ -74,7 +74,7 @@ const Login = (props) => {
             <button
               type="button"
               onClick={handleLogin}
-              className="btn btn-primary"
+              className="custom-btn-purple"
             >
               Login
             </button>

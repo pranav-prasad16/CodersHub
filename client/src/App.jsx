@@ -11,7 +11,9 @@ import Signup from './pages/Signup';
 import SignupSuccess from './pages/SignupSuccess';
 import Problems from './pages/Problems';
 import ProblemDetails from './pages/ProblemDetails';
+// import Profile from './pages/Profile';
 import NoPage from './pages/noPage';
+import './styles/style.css';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,6 +51,7 @@ function App() {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/contactsuccess" element={<ContactSuccess />} />
+          {/* <Route path="/profile" element={<Profile />} /> */}
           <Route
             path="/about"
             element={<About isAuthenticated={isAuthenticated} />}

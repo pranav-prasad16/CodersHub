@@ -46,21 +46,6 @@ input[type='password'] {
   outline: none;
 }
 
-/* button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-   */
-
 .logo {
   width: 6rem; /* Set the desired width */
   height: auto; /* Automatically adjust height while maintaining aspect ratio */
@@ -71,40 +56,30 @@ input[type='password'] {
   border-radius: 100px;
   height: auto;
 }
+
+.nav-item:hover {
+  font-weight: bold;
+}
+
+.nav-btn-bold:hover {
+  font-weight: bold;
+}
+
 /* CSS for the hover effect with line */
 .nav-link {
   position: relative; /* Make the link container relative for absolute positioning */
   text-decoration: none; /* Remove default underline */
   overflow: hidden; /* Hide any overflowing content */
+  border-radius: 100px;
 }
 
-.nav-link::before,
-.nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px; /* Adjust the line thickness as needed */
-  background-color: limegreen; /* Change to your desired line color */
-  bottom: 0;
-  transition: width 0.7s; /* Add a smooth transition effect */
+.nav-link {
+  color: #333; /* Default font color */
+  transition: color 0.3s; /* Smooth transition for font color change */
 }
 
-.nav-link::before {
-  left: 0; /* Start the line from the beginning of the link */
-  transform: scaleX(0); /* Initially, set the width to 0 */
-  transform-origin: left; /* Scale from the left edge */
-}
-
-.nav-link::after {
-  right: 0; /* Start the line from the end of the link */
-  transform: scaleX(0); /* Initially, set the width to 0 */
-  transform-origin: right; /* Scale from the right edge */
-}
-
-.nav-link:hover::before,
-.nav-link:hover::after {
-  width: 100%; /* Expand the line to cover the entire width of the link */
-  transform: scaleX(1); /* Scale the line to its full width */
+.nav-link:hover {
+  color: #666;
 }
 
 .problems-link {
@@ -113,18 +88,21 @@ input[type='password'] {
   color: black;
 }
 
-.btn-link {
+.all-problems-link {
   list-style: none;
   text-decoration: none;
   color: black;
 }
 
-.custom-btn {
-  color: #000; /* Set the desired text color */
-  background-color: transparent; /* Remove background color */
-  border: none; /* Remove borders if needed */
-  text-decoration: none; /* Remove underlines on links if needed */
-  cursor: pointer; /* Set the cursor to a pointer for better UX */
+.all-problems-link:hover {
+  font-weight: bold;
+  color: #ff7f50;
+}
+
+.btn-link {
+  list-style: none;
+  text-decoration: none;
+  color: black;
 }
 
 /* Example media query for smaller screens */
