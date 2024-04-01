@@ -62,7 +62,7 @@ const Layout = (props) => {
             {isAuthenticated ? (
               <ul className="navbar-nav">
                 <li className="nav-item" to="/logout">
-                  <button className="custom-btn-nav" onClick={onLogout}>
+                  <button className="custom-btn-blue" onClick={onLogout}>
                     Logout
                   </button>
                 </li>
@@ -71,12 +71,12 @@ const Layout = (props) => {
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">
-                    <button className="custom-btn-nav ">Login</button>
+                    <button className="custom-btn-blue">Login</button>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/signup">
-                    <button className="custom-btn-nav">Signup</button>
+                    <button className="custom-btn-blue">Signup</button>
                   </Link>
                 </li>
               </ul>

@@ -94,11 +94,6 @@ input[type='password'] {
   color: black;
 }
 
-.all-problems-link:hover {
-  font-weight: bold;
-  color: #ff7f50;
-}
-
 .btn-link {
   list-style: none;
   text-decoration: none;
