@@ -56,3 +56,50 @@ body {
 .link:hover {
   color: rgb(60, 3, 100); /* White color on hover */
 }
+
+.services {
+  height: 550px;
+  width: 60vw;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
+}
+/* .chooseMe .services{
+    height: 450px;
+
+} */
+
+.services span {
+  color: var(--themeColor);
+}
+.servicesBox {
+  height: 35%;
+  width: 100%;
+  padding: 5vh 0 5vh 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.box {
+  height: 200px;
+  width: 180px;
+  background: linear-gradient(0deg, var(--boxColor), transparent);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+  padding: 20px 10px 15px;
+  transition: 0.2s cubic-bezier(0.43, 0.28, 0, 1.01);
+  cursor: default;
+}
+.box p {
+  font-size: small;
+}
+.box:hover {
+  background-color: var(--hoverColor);
+}

@@ -11,7 +11,9 @@ const Home = (props) => {
       </header>
 
       <section className="features my-5">
-        <h2 className="text-center">What We Offer</h2>
+        <h2 className="text-center">
+          What We <span>Offer</span>
+        </h2>
         <div className="row my-5">
           <div className="col-md-6">
             <div className="feature-item">
@@ -65,7 +67,9 @@ const Home = (props) => {
       </section>
 
       <section className="features my-5">
-        <h2 className="text-center">Why Choose CodersHub?</h2>
+        <h2 className="text-center">
+          Why Choose <span>CodersHub?</span>
+        </h2>
         <div className="row my-5">
           <div className="col-md-6">
             <div className="feature-item">
