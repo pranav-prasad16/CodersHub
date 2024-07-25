@@ -10,18 +10,22 @@ const ProblemDetails = (props) => {
   const [submittedCode, setSubmittedCode] = useState('');
   const [result, setResult] = useState('');
   const [showResult, setShowResult] = useState(false); // New state for result visibility
+  const [languageId, setLanguageId] = useState(54);
   const [submissions, setSubmissions] = useState([]);
   const [showSubmissions, setShowSubmissions] = useState(false); // state for Getsubmission visibility
   const { userId } = props;
 
   const init = async () => {
-    const response = await fetch('http://localhost:3000/api/questions/' + pid, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
-      },
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/questions/' + pid,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
+        },
+      }
+    );
     const problem = await response.json();
     setProblem(problem);
   };
@@ -36,18 +40,21 @@ const ProblemDetails = (props) => {
   }, []);
 
   const postSubmit = async () => {
-    const response = await fetch('http://localhost:3000/api/submissions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
-      },
-      body: JSON.stringify({
-        problemId: pid,
-        submittedCode: submittedCode,
-        userId: `${localStorage.getItem('UserId')}`,
-      }),
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/submissions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${localStorage.getItem('Token')}`, // Set the Authorization header with the token
+        },
+        body: JSON.stringify({
+          problemId: pid,
+          submittedCode: submittedCode,
+          userId: `${localStorage.getItem('UserId')}`,
+        }),
+      }
+    );
 
     const json = await response.json();
     console.log(json);
@@ -55,7 +62,7 @@ const ProblemDetails = (props) => {
 
   const getSubmit = async () => {
     const response = await fetch(
-      'http://localhost:3000/api/submissions/' + pid,
+      'https://codershub-api.onrender.com/api/submissions/' + pid,
       {
         method: 'GET',
         headers: {
@@ -69,7 +76,7 @@ const ProblemDetails = (props) => {
   };
 
   const handleRun = async () => {
-    const response = await fetch('http://localhost:3000/api/run', {
+    const response = await fetch('https://codershub-api.onrender.com/api/run', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,6 +85,7 @@ const ProblemDetails = (props) => {
       body: JSON.stringify({
         problemId: pid,
         submittedCode: submittedCode,
+        languageId: languageId,
       }),
     });
 
@@ -159,7 +167,7 @@ const ProblemDetails = (props) => {
               max-width="100%"
               height="100vh"
               theme="vs-dark"
-              language="javascript"
+              language="C++"
               value={submittedCode}
               onChange={setSubmittedCode}
               options={{

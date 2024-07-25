@@ -13,7 +13,7 @@ function Profile() {
     try {
       setLoading(true);
       const response = await fetch(
-        'https://localhost:3000/api/profile/' + userId,
+        'https://codershub-api.onrender.com/api/profile/' + userId,
         {
           method: 'GET',
           headers: {

@@ -14,13 +14,16 @@ const Login = (props) => {
     // console.log('Email:', email);
     // console.log('Password:', password);
 
-    const response = await fetch('http://localhost:3000/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/login',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
     if (response.ok) {
       // Successful login

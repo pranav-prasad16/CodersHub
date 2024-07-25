@@ -10,9 +10,12 @@ const Problems = (props) => {
   const problemsPerPage = 15; // Number of problems to display per page
 
   const init = async () => {
-    const response = await fetch('http://localhost:3000/api/questions', {
-      method: 'GET',
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/questions',
+      {
+        method: 'GET',
+      }
+    );
 
     const json = await response.json();
     setProblems(json.problems);
