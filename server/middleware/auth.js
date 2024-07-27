@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 // Load environment variables from the .env file
 dotenv.config();
-const JWT_SECRET = process.env.JWT_SECRET; // Your secret key
+const SECRET_KEY = process.env.SECRET_KEY; // Your secret key
 
 const authMiddleware = (req, res, next) => {
   // Get the token from the request headers, query parameters, or cookies
@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   // Verify the token
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.status(401).json({ msg: 'Unauthorized - Invalid token' });
     }

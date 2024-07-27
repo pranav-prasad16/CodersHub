@@ -6,7 +6,7 @@ const router = express.Router();
 
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
       {
         id: userId,
       },
-      JWT_SECRET
+      SECRET_KEY
     );
     console.log('Logged in successfully!');
     return res.status(200).json({ token, userId });
