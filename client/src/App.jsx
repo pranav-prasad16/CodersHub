@@ -3,12 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Blogs from './pages/Blogs';
 import Contact from './pages/Contact';
-import ContactSuccess from './pages/ContactSuccess';
 import About from './pages/About';
 import Layout from './pages/Layout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import SignupSuccess from './pages/SignupSuccess';
 import Problems from './pages/Problems';
 import ProblemDetails from './pages/ProblemDetails';
 // import Profile from './pages/Profile';
@@ -22,14 +20,14 @@ function App() {
 
   // Function to simulate a login
   const login = (token) => {
-    localStorage.setItem('Token', token);
+    sessionStorage.setItem('Token', token);
     setIsAuthenticated(true);
   };
 
   // Function to simulate a logout
   const logout = () => {
-    localStorage.removeItem('Token');
-    localStorage.removeItem('UserId');
+    sessionStorage.removeItem('Token');
+    sessionStorage.removeItem('UserId');
     setIsAuthenticated(false);
   };
 
@@ -50,14 +48,12 @@ function App() {
           <Route index element={<Home isAuthenticated={isAuthenticated} />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/contactsuccess" element={<ContactSuccess />} />
           {/* <Route path="/profile" element={<Profile />} /> */}
           <Route
             path="/about"
             element={<About isAuthenticated={isAuthenticated} />}
           />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/signupsuccess" element={<SignupSuccess />} />
           <Route
             path="/login"
             element={

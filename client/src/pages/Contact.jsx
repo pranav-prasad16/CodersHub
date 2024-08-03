@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [feedbackMessage, setFeedbackMessage] = useState('');
   const [isWrong, setIsWrong] = useState(false);
-  const navigate = useNavigate();
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async () => {
     // console.log(userName);
@@ -28,32 +27,34 @@ const Contact = () => {
       if (response.ok) {
         const json = await response.json();
         const successResponse = json.message;
-        console.log(successResponse);
-        navigate('/contactSuccess');
+        setFeedbackMessage(successResponse);
+        setIsSuccess(true);
       } else {
         const json = await response.json();
         const errorResponse = json.message;
         console.log(errorMessage);
-        setErrorMessage(errorResponse);
+        setFeedbackMessage(errorResponse);
         setIsWrong(true);
       }
     } catch (err) {
-      console.log('Error is : ', err);
+      setFeedbackMessage('An unexpected error occurred. Please try again.');
+      setIsWrong(true);
+      console.log('Error is : ', err.message);
     }
   };
   return (
     <>
-      {isWrong ? (
-        <h1>{errorMessage}</h1>
+      {isWrong || isSuccess ? (
+        <h1 className="feedback-message">{feedbackMessage}</h1>
       ) : (
         <div className="container">
-          <header className="text-center my-3">
+          <main className="text-center my-3">
             <h1 className="display-4">Loved our platform?</h1>
             <p className="lead">
               We'd love to hear from you! Please use the form below to get in
               touch.
             </p>
-          </header>
+          </main>
 
           <form>
             <div className="form-group">

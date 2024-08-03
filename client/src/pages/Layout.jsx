@@ -7,8 +7,8 @@ import ThemeToggleButton from '../components/ThemeToggleButton';
 const Layout = (props) => {
   const { isAuthenticated, onLogout } = props;
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-customize">
+    <div className="bg-customize">
+      <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container">
           <Link className="navbar-brand" to="/">
             <img
@@ -50,33 +50,35 @@ const Layout = (props) => {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/contact">
-                  Contact Us
+                  Contact
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/about">
-                  About Us
+                  About
                 </Link>
               </li>
             </ul>
             {isAuthenticated ? (
               <ul className="navbar-nav">
-                <li className="nav-item" to="/logout">
-                  <button className="custom-btn-blue" onClick={onLogout}>
-                    Logout
-                  </button>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">
+                    <button className="custom-btn" onClick={onLogout}>
+                      Logout
+                    </button>
+                  </Link>
                 </li>
               </ul>
             ) : (
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">
-                    <button className="custom-btn-blue">Login</button>
+                    <button className="custom-btn">Login</button>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/signup">
-                    <button className="custom-btn-blue">Signup</button>
+                    <button className="custom-btn">Signup</button>
                   </Link>
                 </li>
               </ul>
@@ -85,7 +87,7 @@ const Layout = (props) => {
         </div>
       </nav>
       <Outlet />
-    </>
+    </div>
   );
 };
 

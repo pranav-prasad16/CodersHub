@@ -1,3 +1,208 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* font-family: 'Montserrat', sans-serif; */
+/* font-family: 'Oswald', sans-serif; */
+body {
+  margin: 0;
+  /* padding: 0; */
+}
+* {
+  font-family: 'Montserrat', sans-serif, monospace, 'Dancing Script', cursive;
+  color: var(--fontColor);
+  transition: 0.2s cubic-bezier(0.43, 0.28, 0, 1.01);
+}
+html {
+  scroll-behavior: smooth;
+}
+a {
+  display: contents;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bgBolor);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #44535b;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #546a76;
+}
+
+::selection {
+  background-color: var(--selectColor);
+  color: aliceblue;
+}
+:root {
+  --mainHeading: 40px;
+  --subHeading: 35px;
+  --smallFont: 16px;
+  --themeColor: #28c1e0;
+  --bgBolor: #f5f5f5;
+  --boxColor: #ffffff;
+  --selectColor: #44535b;
+  --hoverColor: #76dbf0;
+  --bgNavMobile: #aaeaf7;
+  --vlineColor: #000000;
+  --fontColor: #000000;
+}
+h1 {
+  font-size: var(--mainHeading);
+}
+
+body {
+  background-color: var(--bgBolor);
+  margin: 0;
+  position: relative;
+  overflow-x: hidden;
+}
+
+ul {
+  font-size: var(--smallFont);
+  text-decoration: none;
+  list-style: none;
+  margin: 0;
+  gap: 2%;
+  padding: 0;
+}
+li {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+/* 
+li:not(.slash, .resume)::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  height: 2px;
+  width: 60%;
+  left: -40%;
+  background-color: var(--themeColor);
+  border-radius: 50%;
+  transition: 0.2s cubic-bezier(0.43, 0.28, 0, 1.01);
+  transform: scaleX(0);
+}
+li:not(.slash):hover::after {
+  transform: scaleX(1) translate(100%);
+  color: var(--themeColor);
+} */
+
+.blue-text {
+  color: var(--themeColor);
+}
+
+.what-I-offer {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  margin-bottom: 30px;
+}
+
+.what-I-offer::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  height: 2px;
+  width: 40%;
+  left: 30%;
+  background-color: var(--themeColor);
+}
+
+.bold-font {
+  font-weight: bold;
+}
+
+.box {
+  height: auto;
+  width: 30rem;
+  background: linear-gradient(0deg, var(--boxColor), transparent);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+  padding: 20px 10px 15px;
+  transition: 0.2s cubic-bezier(0.43, 0.28, 0, 1.01);
+  cursor: default;
+}
+.box p {
+  font-size: small;
+}
+.box:hover {
+  background-color: var(--hoverColor);
+}
+
+.custom-btn {
+  background-color: var(--themeColor);
+  border: none;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 1rem;
+  transition: background-color 0.3s;
+}
+
+.custom-btn:hover {
+  background-color: #76dbf0;
+}
+
+.open-link {
+  border: 1px solid var(--themeColor);
+  border-radius: 4px;
+  padding: 8px;
+  background-color: var(--bgBolor);
+  font-size: var(--smallFont);
+  transition: 0.2s cubic-bezier(0.43, 0.28, 0, 1.01);
+}
+
+.open-link:hover {
+  background-color: var(--hoverColor);
+  cursor: pointer;
+}
+
+.start-coding {
+  color: #000000;
+  border: 1px solid var(--themeColor);
+  padding: 0.75rem 0.25rem;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.start-coding img {
+  width: 12px;
+  margin-left: 5px;
+}
+.start-coding:hover {
+  background-color: var(--hoverColor);
+}
+
+.icon-filter {
+  filter: invert(100%);
+}
+
+.link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
 .login-container {
   max-width: 400px;
   margin: 0 auto;
@@ -24,6 +229,25 @@
 .signup-container h2 {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.success-message {
+  display: flex;
+  justify-content: center;
+  color: #058a22bb;
+}
+
+.error-message {
+  display: flex;
+  justify-content: center;
+  color: #c50b0b;
+}
+
+.feedback-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #22024bbd;
 }
 
 .form-group {
@@ -57,29 +281,109 @@ input[type='password'] {
   height: auto;
 }
 
-.nav-item:hover {
-  font-weight: bold;
+.nav-item:not(.slash, .resume)::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  height: 2px;
+  width: 60%;
+  left: -40%;
+  background-color: var(--themeColor);
+  border-radius: 50%;
+  transition: 0.2s cubic-bezier(0.43, 0.28, 0, 1.01);
+  transform: scaleX(0);
+}
+.nav-item:not(.slash):hover::after {
+  transform: scaleX(1) translate(100%);
+  color: var(--themeColor);
 }
 
-.nav-btn-bold:hover {
+/* .nav-btn-bold:hover {
   font-weight: bold;
-}
+} */
 
 /* CSS for the hover effect with line */
 .nav-link {
-  position: relative; /* Make the link container relative for absolute positioning */
-  text-decoration: none; /* Remove default underline */
-  overflow: hidden; /* Hide any overflowing content */
+  position: relative;
+  text-decoration: none;
+  overflow: hidden;
   border-radius: 100px;
+  color: #333;
+  transition: color 0.3s;
 }
 
-.nav-link {
-  color: #333; /* Default font color */
-  transition: color 0.3s; /* Smooth transition for font color change */
+.nav-link:hover,
+.nav-link:focus {
+  color: var(--hoverColor);
 }
 
-.nav-link:hover {
-  color: #666;
+.foot {
+  background-color: var(--bgBolor);
+  padding: 3em 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.foot__heading {
+  font-family: 'Oswald', sans-serif;
+  /* color: #a59678; */
+}
+
+.foot__list {
+  list-style: none;
+  padding: 0;
+  max-width: 100%;
+}
+
+.foot__item {
+  margin-bottom: 1em;
+}
+
+.foot__link {
+  text-decoration: none;
+  color: var(--fontColor);
+  font-size: 0.75em;
+}
+
+.foot__link:hover,
+.foot__link:focus {
+  opacity: 0.5;
+  color: var(--hoverColor);
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.footer-social-icons a {
+  color: #acadaf;
+  font-size: 1.5em;
+}
+
+.footer-social-icons a:hover {
+  opacity: 0.75;
+}
+
+.icons {
+  width: 15px;
+  border-radius: 4px;
+  /* border: 1px solid rgb(18, 117, 132); */
+  margin: 5px;
+}
+
+.icon-filter {
+  filter: invert(100%);
+}
+
+.developed {
+  bottom: 0;
+  font-size: small;
+}
+
+.portfolio-link {
+  color: var(--fontColor);
+  text-decoration: none;
 }
 
 .problems-link {
@@ -92,6 +396,23 @@ input[type='password'] {
   list-style: none;
   text-decoration: none;
   color: black;
+}
+
+.message-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editor-container {
+  width: 100%;
+  overflow: hidden; /* Prevent horizontal overflow */
+  position: relative;
+}
+
+.custom-container {
+  margin: 0;
+  padding: 0;
 }
 
 .btn-link {
