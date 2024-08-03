@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import logo from './../assets/logo/png black.svg';
+import Footer from './Footer';
 import profileImg from './../assets/logo/profile-user.png';
 import ThemeToggleButton from '../components/ThemeToggleButton';
 
@@ -87,6 +88,9 @@ const Layout = (props) => {
         </div>
       </nav>
       <Outlet />
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 };

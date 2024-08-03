@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Problems from './pages/Problems';
 import ProblemDetails from './pages/ProblemDetails';
+import Footer from './pages/Footer';
 // import Profile from './pages/Profile';
 import NoPage from './pages/noPage';
 import './styles/style.css';
