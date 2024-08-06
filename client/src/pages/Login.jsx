@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -8,12 +10,12 @@ const Login = (props) => {
   const [isWrong, setIsWrong] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
-  const { onLogin, problemId, setUserId } = props;
+  const { login } = useContext(AuthContext);
+  const { problemId } = props;
   const loginURL = 'https://codershub-api.onrender.com/api/login';
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    // Clear previous error messages
     setErrorMessage('');
     setIsWrong(false);
     setIsSuccess(false);
@@ -27,27 +29,23 @@ const Login = (props) => {
     });
 
     if (response.ok) {
-      // Successful login
       const json = await response.json();
       const token = json.token;
       const userId = json.userId;
-      onLogin(token);
-      sessionStorage.setItem('UserId', userId);
-      setUserId(userId);
+      login(token, userId, json);
       setIsSuccess(true);
       const url = `/problem/${problemId}`;
       setTimeout(() => {
         if (problemId) {
           navigate(url);
         } else {
-          navigate('/'); // Redirect to /problems if problemId is not available
+          navigate('/');
         }
       }, 1000);
     } else {
-      // Error occurred
       const json = await response.json();
       const errorResponse = json.message;
-      setErrorMessage(errorResponse); // Set the error message state
+      setErrorMessage(errorResponse);
       setIsWrong(true);
     }
   };

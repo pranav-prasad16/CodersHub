@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import openLinkLogo from '../assets/logo/openlink.svg';
+import AuthContext from '../context/AuthContext';
 
-const Home = (props) => {
-  const { isAuthenticated } = props;
+const Home = () => {
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <div className="bg-customize">
       <div className="container">

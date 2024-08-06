@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Blogs from './pages/Blogs';
@@ -13,24 +13,26 @@ import Footer from './pages/Footer';
 // import Profile from './pages/Profile';
 import NoPage from './pages/noPage';
 import './styles/style.css';
+import AuthContext from './context/AuthContext';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [problemId, setProblemId] = useState(null);
-  const [userId, setUserId] = useState(null);
+  // const [userId, setUserId] = useState(null);
+  const { isAuthenticated } = useContext(AuthContext);
 
   // Function to simulate a login
-  const login = (token) => {
-    sessionStorage.setItem('Token', token);
-    setIsAuthenticated(true);
-  };
+  // const login = (token) => {
+  //   sessionStorage.setItem('Token', token);
+  //   setIsAuthenticated(true);
+  // };
 
   // Function to simulate a logout
-  const logout = () => {
-    sessionStorage.removeItem('Token');
-    sessionStorage.removeItem('UserId');
-    setIsAuthenticated(false);
-  };
+  // const logout = () => {
+  //   sessionStorage.removeItem('Token');
+  //   sessionStorage.removeItem('UserId');
+  //   setIsAuthenticated(false);
+  // };
 
   // A function to handle authentication-based redirection
   const requireAuth = (component) => {
@@ -40,31 +42,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout isAuthenticated={isAuthenticated} onLogout={logout} />
-          }
-        >
-          <Route index element={<Home isAuthenticated={isAuthenticated} />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<Contact />} />
           {/* <Route path="/profile" element={<Profile />} /> */}
-          <Route
-            path="/about"
-            element={<About isAuthenticated={isAuthenticated} />}
-          />
+          <Route path="/about" element={<About />} />
           <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/login"
-            element={
-              <Login
-                onLogin={login}
-                setUserId={setUserId}
-                problemId={problemId}
-              />
-            }
-          />
+          <Route path="/login" element={<Login problemId={problemId} />} />
           <Route
             path="/problems"
             element={<Problems setProblemId={setProblemId} />}
@@ -73,7 +58,7 @@ function App() {
         </Route>
         <Route
           path="/problem/:pid/"
-          element={requireAuth(<ProblemDetails userId={userId} />)} // Protect this route with requireAuth
+          element={requireAuth(<ProblemDetails />)} // Protect this route with requireAuth
         />
       </Routes>
     </BrowserRouter>

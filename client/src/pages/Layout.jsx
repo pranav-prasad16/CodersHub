@@ -1,22 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import logo from './../assets/logo/png black.svg';
 import Footer from './Footer';
 import profileImg from './../assets/logo/profile-user.png';
-import ThemeToggleButton from '../components/ThemeToggleButton';
+import AuthContext from '../context/AuthContext';
 
-const Layout = (props) => {
-  const { isAuthenticated, onLogout } = props;
+const Layout = () => {
+  const { isAuthenticated, logout } = useContext(AuthContext);
   return (
     <div className="bg-customize">
       <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container">
           <Link className="navbar-brand" to="/">
-            <img
-              src={logo} // Replace with the actual path to your logo image
-              alt="Your Logo"
-              className="logo"
-            />
+            <img src={logo} alt="Your Logo" className="logo" />
           </Link>
           <button
             className="navbar-toggler"
@@ -64,7 +60,7 @@ const Layout = (props) => {
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link className="nav-link" to="/">
-                    <button className="custom-btn" onClick={onLogout}>
+                    <button className="custom-btn" onClick={logout}>
                       Logout
                     </button>
                   </Link>

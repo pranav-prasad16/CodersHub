@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import openLinkLogo from '../assets/logo/openlink.svg';
 import logo from './../assets/logo/png black.svg';
 import Editor from '@monaco-editor/react';
+import AuthContext from '../context/AuthContext';
 
-const ProblemDetails = (props) => {
+const ProblemDetails = () => {
   const { pid } = useParams();
-  const [problem, setProblem] = useState(null); // Changed initial state to null
-  const [loading, setLoading] = useState(true); // Added loading state
+  const [problem, setProblem] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [submittedCode, setSubmittedCode] = useState('');
   const [result, setResult] = useState('');
-  const [showResult, setShowResult] = useState(false); // New state for result visibility
+  const [showResult, setShowResult] = useState(false);
   const [languageId, setLanguageId] = useState(54);
   const [submissions, setSubmissions] = useState([]);
-  const [showSubmissions, setShowSubmissions] = useState(false); // state for Getsubmission visibility
-  const { userId } = props;
+  const [showSubmissions, setShowSubmissions] = useState(false);
+  const { userId, tokenId } = useContext(AuthContext);
 
   const init = async () => {
-    const token = sessionStorage.getItem('Token');
     const response = await fetch('http://localhost:3000/api/questions/' + pid, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`, // Set the Authorization header with the token
+        authorization: `Bearer ${tokenId}`,
       },
     });
 
@@ -33,7 +33,7 @@ const ProblemDetails = (props) => {
     } else {
       setProblem(null);
     }
-    setLoading(false); // Set loading to false after fetching data
+    setLoading(false);
   };
 
   const handleSubmit = () => {
@@ -46,12 +46,11 @@ const ProblemDetails = (props) => {
   }, []);
 
   const postSubmit = async () => {
-    const userId = sessionStorage.getItem('UserId');
     const response = await fetch('http://localhost:3000/api/submissions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`, // Set the Authorization header with the token
+        authorization: `Bearer ${tokenId}`,
       },
       body: JSON.stringify({
         problemId: pid,
@@ -71,7 +70,7 @@ const ProblemDetails = (props) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`, // Set the Authorization header with the token
+          authorization: `Bearer ${tokenId}`,
         },
       }
     );
@@ -84,7 +83,7 @@ const ProblemDetails = (props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`, // Set the Authorization header with the token
+        authorization: `Bearer ${tokenId}`,
       },
       body: JSON.stringify({
         problemId: pid,
@@ -163,11 +162,7 @@ const ProblemDetails = (props) => {
       <div className="row">
         <div className="col-5">
           <Link className="navbar-brand" to="/">
-            <img
-              src={logo} // Replace with the actual path to your logo image
-              alt="Your Logo"
-              className="logo"
-            />
+            <img src={logo} alt="Your Logo" className="logo" />
           </Link>
         </div>
         <div className="col-6" style={{ marginTop: '.5rem' }}>
@@ -216,7 +211,6 @@ const ProblemDetails = (props) => {
               <h5>Write your code here : </h5>
               <div className="editor-container">
                 {' '}
-                {/* Added wrapper */}
                 <Editor
                   max-width="100%"
                   height="100vh"
@@ -225,12 +219,11 @@ const ProblemDetails = (props) => {
                   value={submittedCode}
                   onChange={setSubmittedCode}
                   options={{
-                    minimap: { enabled: false }, // Disable the minimap
-                    automaticLayout: true, // Auto-resize the editor
+                    minimap: { enabled: false },
+                    automaticLayout: true,
                   }}
                 />
               </div>{' '}
-              {/* End of wrapper */}
             </div>
             <div className="d-grid gap-1 d-md-flex">
               <button

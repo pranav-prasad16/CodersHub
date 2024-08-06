@@ -14,11 +14,7 @@ const Footer = () => {
           <div className="col">
             <h3 className="foot__heading">
               <Link className="navbar-brand center" to="/">
-                <img
-                  src={logo} // Replace with the actual path to your logo image
-                  alt="Your Logo"
-                  className="logo"
-                />
+                <img src={logo} alt="Your Logo" className="logo" />
               </Link>
             </h3>
             <ul className="foot__list footer-social-icons">
@@ -77,7 +73,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="col">
-            <h3 className="foot__heading">Links</h3>
+            <h3 className="foot__heading">Important Links</h3>
             <ul className="foot__list">
               <li className="foot__item">
                 <Link className="foot__link" to="/">

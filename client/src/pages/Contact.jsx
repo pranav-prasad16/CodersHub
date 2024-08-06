@@ -9,10 +9,6 @@ const Contact = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async () => {
-    // console.log(userName);
-    // console.log(email);
-    // console.log(message);
-
     const response = await fetch(
       'https://codershub-api.onrender.com/api/contact',
       {

@@ -14,7 +14,6 @@ const Signup = () => {
 
   const handleSignup = async () => {
     event.preventDefault();
-    // Clear previous messages
     setErrorMessage('');
     setIsWrong(false);
     setIsSuccess(false);

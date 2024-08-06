@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 
-const About = (props) => {
-  const { isAuthenticated } = props;
+const About = () => {
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <div className="container">
       <header className="text-center my-3">

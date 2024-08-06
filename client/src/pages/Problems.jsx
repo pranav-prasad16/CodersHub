@@ -7,7 +7,8 @@ const Problems = (props) => {
   const [problems, setProblems] = useState([]);
   const { setProblemId } = props;
   const [currentPage, setCurrentPage] = useState(1);
-  const problemsPerPage = 15; // Number of problems to display per page
+  const [loading, setLoading] = useState(true);
+  const problemsPerPage = 15;
 
   const init = async () => {
     const questionsURL = 'https://codershub-api.onrender.com/api/questions';
@@ -15,12 +16,16 @@ const Problems = (props) => {
       method: 'GET',
     });
 
-    const json = await response.json();
-    setProblems(json.problems);
+    if (response.ok) {
+      const json = await response.json();
+      setProblems(json.problems);
+    } else {
+      setProblems(null);
+    }
+    setLoading(false);
   };
 
   const handleProblemClick = (id) => {
-    // console.log(`Clicked problem with ID: ${id}`);
     if (id) {
       setProblemId(id);
     }
@@ -38,17 +43,23 @@ const Problems = (props) => {
     init();
   }, []);
 
-  // Calculate the range of problems to display on the current page
   const startIndex = (currentPage - 1) * problemsPerPage;
   const endIndex = currentPage * problemsPerPage;
   const displayedProblems = problems.slice(startIndex, endIndex);
 
-  // Calculate the total number of pages
   const totalPages = Math.ceil(problems.length / problemsPerPage);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
+
+  if (loading) {
+    return (
+      <div className="container text-center">
+        <h2 className="mt-3 message-center">Loading...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-customize">
@@ -68,7 +79,7 @@ const Problems = (props) => {
                 <th>{problem.id}</th>
                 <td>
                   <Link
-                    to={`/problem/${problem._id}`} // Remove ':' before problem.id
+                    to={`/problem/${problem._id}`}
                     onClick={() => handleProblemClick(problem._id)}
                     className="problems-link"
                   >
