@@ -29,10 +29,8 @@ const Login = (props) => {
     });
 
     if (response.ok) {
-      const json = await response.json();
-      const token = json.token;
-      const userId = json.userId;
-      login(token, userId, json);
+      const user = await response.json();
+      login(user);
       setIsSuccess(true);
       const url = `/problem/${problemId}`;
       setTimeout(() => {

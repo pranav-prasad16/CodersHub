@@ -16,7 +16,9 @@ const ProblemDetails = () => {
   const [languageId, setLanguageId] = useState(54);
   const [submissions, setSubmissions] = useState([]);
   const [showSubmissions, setShowSubmissions] = useState(false);
-  const { userId, tokenId } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const tokenId = user.token;
+  const userId = user.userId;
 
   const init = async () => {
     const response = await fetch('http://localhost:3000/api/questions/' + pid, {

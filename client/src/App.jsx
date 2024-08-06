@@ -16,25 +16,9 @@ import './styles/style.css';
 import AuthContext from './context/AuthContext';
 
 function App() {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [problemId, setProblemId] = useState(null);
-  // const [userId, setUserId] = useState(null);
   const { isAuthenticated } = useContext(AuthContext);
 
-  // Function to simulate a login
-  // const login = (token) => {
-  //   sessionStorage.setItem('Token', token);
-  //   setIsAuthenticated(true);
-  // };
-
-  // Function to simulate a logout
-  // const logout = () => {
-  //   sessionStorage.removeItem('Token');
-  //   sessionStorage.removeItem('UserId');
-  //   setIsAuthenticated(false);
-  // };
-
-  // A function to handle authentication-based redirection
   const requireAuth = (component) => {
     return isAuthenticated ? component : <Navigate to="/login" />;
   };
@@ -58,7 +42,7 @@ function App() {
         </Route>
         <Route
           path="/problem/:pid/"
-          element={requireAuth(<ProblemDetails />)} // Protect this route with requireAuth
+          element={requireAuth(<ProblemDetails />)}
         />
       </Routes>
     </BrowserRouter>
