@@ -285,26 +285,26 @@ const ProblemDetails = () => {
               <button
                 type="button"
                 onClick={handleRun}
-                className="btn btn-outline-success"
+                className="btn btn-success"
               >
-                Run{' '}
                 <img
                   src={runLogo}
                   alt="run button logo"
                   className="icon-filter"
-                />
+                />{' '}
+                Run
               </button>
               <button
                 type="button"
                 onClick={handleSubmit}
                 className="btn btn-success"
               >
-                Submit{' '}
                 <img
                   src={submitLogo}
                   alt="submit button logo"
                   className="icon-filter"
-                />
+                />{' '}
+                Submit
               </button>
             </div>
           </section>
