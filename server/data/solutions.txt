@@ -1,0 +1,161 @@
+solutions for the questions 
+
+**************************************
+pallindrome answer -------->
+c++ ->
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool is_palindrome(int x) {
+    string s = to_string(x);
+    string reversed = string(s.rbegin(), s.rend());
+    return s == reversed;
+}
+
+int main() {
+    int number;
+    cin >> number;
+    cout << (is_palindrome(number) ? "true" : "false") << endl;
+    return 0;
+}
+
+java ->
+
+import java.util.Scanner;
+
+public class Main {
+    public static boolean isPalindrome(int x) {
+        String s = Integer.toString(x);
+        String reversed = new StringBuilder(s).reverse().toString();
+        return s.equals(reversed);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int number = scanner.nextInt();
+        System.out.println(isPalindrome(number));
+    }
+}
+
+python ->
+
+import java.util.Scanner;
+
+public class Main {
+    public static boolean isPalindrome(int x) {
+        String s = Integer.toString(x);
+        String reversed = new StringBuilder(s).reverse().toString();
+        return s.equals(reversed);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int number = scanner.nextInt();
+        System.out.println(isPalindrome(number));
+    }
+}
+
+***************************************
+Reverse string -------->
+c++ ->
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+int main() {
+    std::string input;
+    std::getline(std::cin, input);
+    input.erase(std::remove(input.begin(), input.end(), ','), input.end());
+    std::reverse(input.begin(), input.end());
+    std::cout << input << std::endl;
+
+    return 0;
+}
+
+python ->
+
+def reverse_string(s):
+    return s[::-1]
+
+if __name__ == "__main__":
+    import sys
+    input_string = sys.stdin.read().strip()
+
+    input_string = input_string.replace(',', '')
+
+    print(reverse_string(input_string))
+
+***********************************************
+Unique Paths ---------->
+c++ ->
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Function to compute binomial coefficient C(n, k)
+long long binomialCoefficient(int n, int k) {
+    if (k > n - k) {
+        k = n - k; // C(n, k) = C(n, n-k)
+    }
+    long long result = 1;
+    for (int i = 0; i < k; ++i) {
+        result = result * (n - i) / (i + 1);
+    }
+    return result;
+}
+
+// Function to compute unique paths
+int uniquePaths(int m, int n) {
+    return binomialCoefficient(m + n - 2, m - 1);
+}
+
+int main() {
+    string input;
+    getline(cin, input);
+    
+    // Remove brackets and split input
+    input.erase(remove(input.begin(), input.end(), '['), input.end());
+    input.erase(remove(input.begin(), input.end(), ']'), input.end());
+    istringstream iss(input);
+    
+    vector<int> dimensions;
+    string dimension;
+    
+    // Read dimensions from input
+    while (getline(iss, dimension, ',')) {
+        dimensions.push_back(stoi(dimension));
+    }
+    
+    if (dimensions.size() != 2) {
+        cerr << "Invalid input format." << endl;
+        return 1;
+    }
+    
+    int m = dimensions[0];
+    int n = dimensions[1];
+    
+    // Compute and print the number of unique paths
+    cout << uniquePaths(m, n) << endl;
+    
+    return 0;
+}
+
+python ->
+
+import math
+
+def uniquePaths(m, n):
+    return math.comb(m + n - 2, m - 1)
+
+if __name__ == "__main__":
+    import sys
+    input = sys.stdin.read().strip()
+    m, n = map(int, input.strip('[]').split(','))
+    print(uniquePaths(m, n))
