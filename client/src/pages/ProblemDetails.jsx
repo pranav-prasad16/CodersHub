@@ -23,13 +23,16 @@ const ProblemDetails = () => {
   const userId = user.userId;
 
   const init = async () => {
-    const response = await fetch('http://localhost:3000/api/questions/' + pid, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${tokenId}`,
-      },
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/questions/' + pid,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${tokenId}`,
+        },
+      }
+    );
 
     if (response.ok) {
       const problem = await response.json();
@@ -50,18 +53,21 @@ const ProblemDetails = () => {
   }, []);
 
   const postSubmit = async () => {
-    const response = await fetch('http://localhost:3000/api/submissions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${tokenId}`,
-      },
-      body: JSON.stringify({
-        problemId: pid,
-        submittedCode: submittedCode,
-        userId: `${userId}`,
-      }),
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/submissions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${tokenId}`,
+        },
+        body: JSON.stringify({
+          problemId: pid,
+          submittedCode: submittedCode,
+          userId: `${userId}`,
+        }),
+      }
+    );
 
     const json = await response.json();
     console.log(json);
@@ -69,7 +75,7 @@ const ProblemDetails = () => {
 
   const getSubmit = async () => {
     const response = await fetch(
-      'http://localhost:3000/api/submissions/' + pid,
+      'https://codershub-api.onrender.com/api/submissions/' + pid,
       {
         method: 'GET',
         headers: {
@@ -83,7 +89,7 @@ const ProblemDetails = () => {
   };
 
   const handleRun = async () => {
-    const response = await fetch('http://localhost:3000/api/run', {
+    const response = await fetch('https://codershub-api.onrender.com/api/run', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

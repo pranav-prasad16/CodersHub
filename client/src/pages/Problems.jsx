@@ -13,9 +13,12 @@ const Problems = (props) => {
 
   const init = async () => {
     const questionsURL = 'https://codershub-api.onrender.com/api/questions';
-    const response = await fetch('http://localhost:3000/api/questions', {
-      method: 'GET',
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/questions',
+      {
+        method: 'GET',
+      }
+    );
 
     if (response.ok) {
       const json = await response.json();

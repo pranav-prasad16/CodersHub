@@ -19,17 +19,20 @@ const Signup = () => {
     setIsSuccess(false);
     setIsLoading(true);
 
-    const response = await fetch('http://localhost:3000/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userName,
-        email,
-        password,
-      }),
-    });
+    const response = await fetch(
+      'https://codershub-api.onrender.com/api/signup',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userName,
+          email,
+          password,
+        }),
+      }
+    );
 
     if (response.ok) {
       setIsSuccess(true);
