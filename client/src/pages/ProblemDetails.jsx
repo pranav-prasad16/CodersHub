@@ -237,7 +237,7 @@ const ProblemDetails = () => {
               )}
               {submitSuccess && (
                 <div className="alert alert-success mt-3" role="alert">
-                  {submitSuccess}
+                  Submission message: {submitSuccess}
                 </div>
               )}
             </div>
