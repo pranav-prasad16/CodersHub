@@ -41,21 +41,17 @@ public class Main {
 
 python ->
 
-import java.util.Scanner;
+def is_palindrome(x):
+    s = str(x)
+    return s == s[::-1]
 
-public class Main {
-    public static boolean isPalindrome(int x) {
-        String s = Integer.toString(x);
-        String reversed = new StringBuilder(s).reverse().toString();
-        return s.equals(reversed);
-    }
+# Read input
+if __name__ == "__main__":
+    import sys
+    input = sys.stdin.read().strip()
+    number = int(input)
+    print(is_palindrome(number))
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int number = scanner.nextInt();
-        System.out.println(isPalindrome(number));
-    }
-}
 
 ***************************************
 Reverse string -------->
