@@ -7,21 +7,19 @@ router.use(authMiddleware);
 
 router
   .post('/', async (req, res) => {
-    const { userId, problemId, submittedCode, status } = req.body;
+    const submissionData = req.body;
 
-    if (!submittedCode || !problemId || !userId || !status) {
-      console.log(submittedCode, problemId, userId, status);
+    if (
+      !submissionData.submittedCode ||
+      !submissionData.problemId ||
+      !submissionData.userId ||
+      !submissionData.status
+    ) {
       return res.status(401).json({ msg: 'Required fields are empty' });
     }
 
-    const newSubmission = {
-      problemId: problemId,
-      submittedCode: submittedCode,
-      userId: userId,
-      status: status,
-    };
     try {
-      const submittedCode = await Submission.create(newSubmission);
+      const submittedCode = await Submission.create(submissionData);
 
       console.log(submittedCode);
       return res.status(201).json({ msg: 'Code submitted successfully' });

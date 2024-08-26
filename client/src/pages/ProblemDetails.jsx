@@ -230,14 +230,14 @@ const ProblemDetails = () => {
             </div>
             <div>
               {showResult && (
-                <div className="alert alert-success mt-3" role="alert">
+                <div>
                   <div>Result: {generateResult(result)}</div>
                   <div>Message: {resultMessage}</div>
                 </div>
               )}
               {submitSuccess && (
-                <div className="alert alert-success mt-3" role="alert">
-                  Submission message: {submitSuccess}
+                <div className="alert alert-secondary mt-3" role="alert">
+                  {submitSuccess}
                 </div>
               )}
             </div>
