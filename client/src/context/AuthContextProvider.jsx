@@ -14,6 +14,7 @@ const AuthContextProvider = ({ children }) => {
 
   const logout = () => {
     sessionStorage.removeItem('User');
+    localStorage.removeItem('Problems');
     setUser(null);
     setIsAuthenticated(false);
   };
