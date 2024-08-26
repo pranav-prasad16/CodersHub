@@ -9,6 +9,7 @@ const Problems = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const problemsPerPage = 15;
+  const cacheExpiry = 24 * 60 * 60 * 1000;
 
   const init = async () => {
     const questionsURL = 'https://codershub-api.onrender.com/api/questions';
@@ -19,6 +20,7 @@ const Problems = (props) => {
     if (response.ok) {
       const json = await response.json();
       setProblems(json.problems);
+      localStorage.setItem('Problems', JSON.stringify(json.problems));
     } else {
       setProblems(null);
     }
@@ -40,7 +42,11 @@ const Problems = (props) => {
   };
 
   useEffect(() => {
-    init();
+    const cachedProblems = localStorage.getItem('Problems');
+    if (cachedProblems) {
+      setProblems(JSON.parse(cachedProblems));
+      setLoading(false);
+    } else init();
   }, []);
 
   const startIndex = (currentPage - 1) * problemsPerPage;
