@@ -16,6 +16,7 @@ const ProblemDetails = () => {
   const [showResult, setShowResult] = useState(false);
   const [resultMessage, setResultMessage] = useState('');
   const [language, setLanguage] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState('');
   const [submissions, setSubmissions] = useState([]);
   const [showSubmissions, setShowSubmissions] = useState(false);
   const { user } = useContext(AuthContext);
@@ -65,12 +66,18 @@ const ProblemDetails = () => {
           problemId: pid,
           submittedCode: submittedCode,
           userId: `${userId}`,
+          status: result,
         }),
       }
     );
 
-    const json = await response.json();
-    console.log(json);
+    if (response.ok) {
+      const json = await response.json();
+      console.log(json);
+      setSubmitSuccess('Code submitted successfully');
+    } else {
+      setSubmitSuccess('Failed to submit code.');
+    }
   };
 
   const getSubmit = async () => {
@@ -223,9 +230,14 @@ const ProblemDetails = () => {
             </div>
             <div>
               {showResult && (
-                <div>
+                <div className="alert alert-success mt-3" role="alert">
                   <div>Result: {generateResult(result)}</div>
                   <div>Message: {resultMessage}</div>
+                </div>
+              )}
+              {submitSuccess && (
+                <div className="alert alert-success mt-3" role="alert">
+                  {submitSuccess}
                 </div>
               )}
             </div>

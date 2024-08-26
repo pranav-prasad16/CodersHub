@@ -7,9 +7,7 @@ router.use(authMiddleware);
 
 router
   .post('/', async (req, res) => {
-    const answer = Math.floor(Math.random() * 2) > 0;
-    const { userId, problemId, submittedCode } = req.body;
-    const status = answer ? 'AC' : 'WA';
+    const { userId, problemId, submittedCode, status } = req.body;
 
     if (!submittedCode || !problemId || !userId || !status) {
       console.log(submittedCode, problemId, userId, status);
@@ -36,10 +34,9 @@ router
   })
   .get('/:problemId', async (req, res) => {
     const problemId = req.params.problemId;
-    const { userId } = req.body; // Assuming you have the user ID from the authentication middleware
+    const { userId } = req.body;
 
     try {
-      // Find all submissions for the specified problem ID and user ID
       const submissions = await Submission.find({ problemId, userId });
       if (!submissions) {
         return res
