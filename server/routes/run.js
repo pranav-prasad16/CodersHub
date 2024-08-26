@@ -81,7 +81,7 @@ router.post('/', async (req, res) => {
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const result = await getJudgeResult();
-    console.log('Result obj:', result);
+    // console.log('Result obj:', result);
 
     const decodedOutput = result.stdout
       ? Buffer.from(result.stdout, 'base64').toString('utf8').trim()
@@ -94,8 +94,8 @@ router.post('/', async (req, res) => {
 
     const expectedOutput = question.output.toString();
     const isCorrectOutput = checkOutput(decodedOutput, expectedOutput);
-    console.log('Decoded output: ', decodedOutput);
-    console.log('Expected output: ', expectedOutput);
+    // console.log('Decoded output: ', decodedOutput);
+    // console.log('Expected output: ', expectedOutput);
 
     if (isCorrectOutput) {
       return res
