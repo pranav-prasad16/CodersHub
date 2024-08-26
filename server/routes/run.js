@@ -1,23 +1,25 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const Question = require('../models/question-model');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth');
-const { json } = require('body-parser');
 
+dotenv.config();
+
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 router.use(authMiddleware);
 
+const languageCodeMap = {
+  cpp: 54,
+  python: 92,
+  javascript: 93,
+  java: 91,
+};
+
 router.post('/', async (req, res) => {
-  const answer = Math.floor(Math.random() * 2) > 0;
-  const { problemId, submittedCode, languageId } = req.body;
-  //testing for body content received
-  console.log(problemId);
-  console.log(submittedCode);
-  console.log(languageId);
-  const question = await Question.findOne({ id: problemId });
-  //testing for the actual question received
-  console.log(question);
-  console.log(question.input);
-  console.log(question.output);
+  const { problemId, submittedCode, language } = req.body;
+  const question = await Question.findById(problemId);
+  const languageId = languageCodeMap[language];
 
   try {
     const responseToJudge = await fetch(
@@ -25,37 +27,47 @@ router.post('/', async (req, res) => {
       {
         method: 'POST',
         headers: {
-          'x-rapidapi-key':
-            '1bdbb89fcdmshe1b63b938f1bc95p1e59f4jsnca8f24cd9b06',
+          'x-rapidapi-key': RAPIDAPI_KEY,
           'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          source_code: submittedCode,
           language_id: languageId,
-          stdin: question.input,
-          expected_output: question.output,
+          source_code: submittedCode,
+          stdin: question.input.toString(),
+          expected_output: question.output.toString(),
         }),
       }
     );
 
     if (!responseToJudge.ok) {
-      throw new Error(`Judge0 API error: ${responseToJudge.statusText}`);
+      const errorBody = await responseToJudge.text();
+      throw new Error(`Judge0 API error: ${errorBody}`);
     }
 
     const judgeResponseJson = await responseToJudge.json();
     const submissionToken = judgeResponseJson.token;
+
     const getJudgeResult = async () => {
-      const resultResponse = await fetch(
-        `https://judge0-ce.p.rapidapi.com/submissions/${submissionToken}?base64_encoded=true&fields=*`,
-        {
-          method: 'GET',
-          headers: {
-            'x-rapidapi-key': 'YOUR_RAPIDAPI_KEY',
-            'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
-          },
-        }
-      );
+      let attempts = 0;
+      let resultResponse;
+
+      while (attempts < 5) {
+        resultResponse = await fetch(
+          `https://judge0-ce.p.rapidapi.com/submissions/${submissionToken}?base64_encoded=true&fields=*`,
+          {
+            method: 'GET',
+            headers: {
+              'x-rapidapi-key': RAPIDAPI_KEY,
+              'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
+            },
+          }
+        );
+
+        if (resultResponse.ok) break;
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        attempts++;
+      }
 
       if (!resultResponse.ok) {
         throw new Error(
@@ -66,31 +78,42 @@ router.post('/', async (req, res) => {
       return resultResponse.json();
     };
 
-    // might be the reason for error ------------->
-    // Adding delay for result polling
-    await new Promise((resolve) => setTimeout(resolve, 3000)); // Wait for 3 seconds before checking results
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const result = getJudgeResult();
+    const result = await getJudgeResult();
+    console.log('Result obj:', result);
 
-    const isCorrectOutput = checkOutput(result.stdout, question.output);
-    if (isCorrectOutput > 0)
-      return res.status(201).json({ message: 'AC', isCorrectOutput });
-    return res.status(201).json({ message: 'WA', isCorrectOutput });
+    const decodedOutput = result.stdout
+      ? Buffer.from(result.stdout, 'base64').toString('utf8').trim()
+      : '';
+    const decodedStderr = result.stderr
+      ? Buffer.from(result.stderr, 'base64').toString('utf8').trim()
+      : '';
+
+    console.log('Decoded stderr:', decodedStderr);
+
+    const expectedOutput = question.output.toString();
+    const isCorrectOutput = checkOutput(decodedOutput, expectedOutput);
+    console.log('Decoded output: ', decodedOutput);
+    console.log('Expected output: ', expectedOutput);
+
+    if (isCorrectOutput) {
+      return res
+        .status(201)
+        .json({ status: 'AC', message: 'Passed all the test cases' });
+    } else {
+      return res
+        .status(201)
+        .json({ status: 'WA', message: result.status.description });
+    }
   } catch (error) {
-    console.log('Error : ', error);
+    console.error('Error: ', error.message);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 const checkOutput = (actualOutput, expectedOutput) => {
-  try {
-    const actual = JSON.parse(actualOutput);
-    const expected = JSON.parse(expectedOutput);
-
-    return actual.trim() === expected.trim();
-  } catch (error) {
-    return actualOutput.trim() === expectedOutput.trim();
-  }
+  return actualOutput === expectedOutput;
 };
 
 module.exports = router;
